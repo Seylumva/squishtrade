@@ -1,0 +1,19 @@
+.header {
+  padding: 1rem 0;
+  position: relative;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+/* Header wrapper */
+.container-row {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 960px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

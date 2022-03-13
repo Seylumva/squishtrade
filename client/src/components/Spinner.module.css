@@ -1,0 +1,8 @@
+.container {
+  min-height: calc(100vh - 68px);
+  width: 100vw;
+  display: grid;
+  place-items: center;
+}
+
+/* Add your spinner styles here if needed */

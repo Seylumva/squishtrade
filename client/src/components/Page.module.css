@@ -1,0 +1,23 @@
+.page {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-fluid {
+  width: 100%;
+}
+
+.page,
+.page-fluid {
+  padding-block: 2rem;
+  min-height: calc(100vh - 68px);
+}
+
+.heading {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
