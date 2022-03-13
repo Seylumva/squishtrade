@@ -1,13 +1,16 @@
 {
   "name": "mern-app-tempalte",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple listing application for Squishmallow.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
-  "author": "",
+  "author": "Emilio Noa",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",

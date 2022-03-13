@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles["container-row"]}>
-        <h1 className={styles.title}>MERN App Template</h1>
+        <h1 className={styles.title}>Squishtrade</h1>
         <Navigation navOpen={navOpen} closeNav={closeNav} />
         <NavigationToggle navOpen={navOpen} setNavOpen={setNavOpen} />
       </div>

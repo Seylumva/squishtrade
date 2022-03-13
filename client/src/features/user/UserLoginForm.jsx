@@ -5,11 +5,10 @@ import { toast } from "react-toastify";
 import { login, reset } from "./userSlice";
 import Page from "../../components/Page";
 import styles from "./UserForm.module.css";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { Helmet } from "react-helmet-async";
 import Spinner from "../../components/Spinner";
 
 const UserLoginForm = () => {
-  useDocumentTitle("Login");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -63,35 +62,40 @@ const UserLoginForm = () => {
   }
 
   return (
-    <Page title="Login" caption="Sign in to get started" fluid={false}>
-      <form onSubmit={handleLogin} className={styles.form}>
-        <div className={styles["form-group"]}>
-          <label htmlFor="email">Email: </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className={styles["form-group"]}>
-          <label htmlFor="password">Password: </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className={styles["form-group"]}>
-          <button>Sign In</button>
-        </div>
-      </form>
-    </Page>
+    <>
+      <Helmet>
+        <title>Login | Squishtrade</title>
+      </Helmet>
+      <Page title="Login" caption="Sign in to get started" fluid={false}>
+        <form onSubmit={handleLogin} className={styles.form}>
+          <div className={styles["form-group"]}>
+            <label htmlFor="email">Email: </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className={styles["form-group"]}>
+            <label htmlFor="password">Password: </label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className={styles["form-group"]}>
+            <button>Sign In</button>
+          </div>
+        </form>
+      </Page>
+    </>
   );
 };
 

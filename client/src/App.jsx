@@ -3,17 +3,20 @@ import { ToastContainer } from "react-toastify";
 import AppRoutes from "./routes/AppRoutes";
 import Header from "./components/Header";
 import "react-toastify/dist/ReactToastify.css";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (
     <>
-      <Router>
-        <Header />
-        <main>
-          <AppRoutes />
-        </main>
-      </Router>
-      <ToastContainer />
+      <HelmetProvider>
+        <Router>
+          <Header />
+          <main>
+            <AppRoutes />
+          </main>
+        </Router>
+        <ToastContainer />
+      </HelmetProvider>
     </>
   );
 }

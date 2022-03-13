@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Page from "./Page";
 import Spinner from "./Spinner";
 
 const PrivateRoute = () => {

@@ -17,6 +17,13 @@ const Navigation = ({ navOpen, closeNav }) => {
             Home
           </Link>
         </li>
+        {user && (
+          <li>
+            <Link to="profile" onClick={closeNav}>
+              Profile
+            </Link>
+          </li>
+        )}
         {user ? (
           <SignOutButton name={user.name} closeNav={closeNav} />
         ) : (

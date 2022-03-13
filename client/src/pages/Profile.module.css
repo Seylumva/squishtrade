@@ -1,0 +1,36 @@
+.listings {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.listing {
+  padding: 0.5rem;
+}
+
+.profile {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 350px;
+}
+
+.form-group label {
+  text-align: right;
+  flex: 1;
+}
+
+.form-group input {
+  width: 70%;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.empty {
+  text-align: center;
+}
