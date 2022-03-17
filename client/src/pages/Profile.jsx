@@ -38,7 +38,7 @@ const Profile = () => {
               <input type="text" value={user.name} id="name" disabled />
             </div>
             <div className={styles["form-group"]}>
-              <label htmlFor="name">Email: </label>
+              <label htmlFor="name">Public email: </label>
               <input type="text" value={user.email} id="email" disabled />
             </div>
           </div>
@@ -57,9 +57,16 @@ const Profile = () => {
                     className={styles.listing}
                     key={listing._id}
                   >
-                    <h3>{listing.title}</h3>
-                    <p>{listing.description}</p>
-                    <p>Price: ${listing.price}</p>
+                    <h3 className={styles.title}>{listing.title}</h3>
+                    <p className={styles.condition}>
+                      <span>Condition:</span> {listing.condition}
+                    </p>
+
+                    <p className={styles.type}>
+                      <span>Type:</span> {listing.type}
+                    </p>
+
+                    <p className={styles.price}>${listing.price}</p>
                   </Link>
                 ))}
             </article>
