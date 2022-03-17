@@ -1,6 +1,9 @@
 .header {
   padding: 1rem 0;
   position: relative;
+  background-color: #ffeeee;
+  color: rgb(18, 18, 18);
+  z-index: 999;
 }
 
 .title {
