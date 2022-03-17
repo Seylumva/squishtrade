@@ -1,7 +1,7 @@
 .nav {
   display: none;
   position: absolute;
-  background: #222;
+  background: #ffeeee;
   left: 0;
   right: 0;
   top: 100%;
@@ -20,23 +20,26 @@
 
 .nav a,
 .nav button {
-  color: #afafaf;
+  color: rgb(18, 18, 18);
+  font-weight: 500;
   text-decoration: none;
   transition: color 250ms ease;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
+  border-bottom: 2px solid transparent;
 }
 
 .nav--visible {
   display: block;
-  background: rgb(18, 18, 18);
+  background: #ffeeee;
 }
 
 .nav a:hover,
 .nav button:hover {
-  color: whitesmoke;
+  color: rgb(18, 18, 18);
+  border-bottom: 2px solid rgb(18, 18, 18);
 }
 
 @media (min-width: 720px) {
@@ -56,11 +59,9 @@
     color: rgb(18, 18, 18);
     font-weight: 500;
     transition: border-bottom 250ms ease;
-    border-bottom: 3px solid transparent;
   }
   .nav a:hover,
   .nav button:hover {
     color: unset;
-    border-bottom: 3px solid orange;
   }
 }
