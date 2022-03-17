@@ -11,7 +11,15 @@
 .page,
 .page-fluid {
   padding-block: 2rem;
-  min-height: calc(100vh - 68px);
+  position: relative;
+}
+
+.page:first-of-type {
+  height: calc(100vh - 68px);
+}
+
+.page:not(:first-of-type) {
+  height: 100vh;
 }
 
 .heading {
@@ -20,4 +28,8 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 2rem;
+}
+
+.page > *:first-child:not(header) {
+  height: 100%;
 }
