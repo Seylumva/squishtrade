@@ -65,6 +65,28 @@ export const createListing = createAsyncThunk(
   }
 );
 
+export const editListing = createAsyncThunk(
+  "listing/editListing",
+  async ({ listingId, formData }, thunkAPI) => {
+    try {
+      const response = await axios.put(`${API_URL}/${listingId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const deleteListing = createAsyncThunk(
   "listing/deleteListing",
   async (listingId, thunkAPI) => {
@@ -140,9 +162,18 @@ const listingSlice = createSlice({
       })
       .addCase(deleteListing.fulfilled, (state, action) => {
         state.status = "success";
-        state.listing = action.payload;
       })
       .addCase(deleteListing.rejected, (state, action) => {
+        state.status = "error";
+        state.message = action.payload;
+      })
+      .addCase(editListing.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(editListing.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(editListing.rejected, (state, action) => {
         state.status = "error";
         state.message = action.payload;
       });

@@ -58,11 +58,39 @@ const createListing = catchAsync(async (req, res) => {
     condition,
     author: userId,
   });
-  // await newListing.save()
   if (newListing) {
     res.status(201).json(newListing);
   } else {
     throw new AppError("Invalid listing data.", 400);
+  }
+});
+
+const updateListing = catchAsync(async (req, res) => {
+  const { _id: userId } = req.user;
+  const { id: listingId } = req.params;
+  const formData = req.body;
+
+  const matchedListing = await Listing.findById(listingId);
+
+  if (!userId) {
+    throw new AppError("No credentials", 401);
+  }
+
+  if (!matchedListing) {
+    throw new AppError("No listing found.", 404);
+  }
+
+  if (!userId.equals(matchedListing.author)) {
+    throw new AppError("You're not authorized to edit this post.", 403);
+  }
+
+  const updatedListing = await Listing.findByIdAndUpdate(listingId, formData, {
+    returnDocument: "after",
+  });
+  if (updatedListing) {
+    res.status(200).json(updatedListing);
+  } else {
+    throw new AppError("Unable to edit listing.", 500);
   }
 });
 
@@ -88,4 +116,5 @@ module.exports = {
   getListing,
   createListing,
   deleteListing,
+  updateListing,
 };
