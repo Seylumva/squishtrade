@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Page from "../../components/Page";
 import Spinner from "../../components/Spinner";
 import { Helmet } from "react-helmet-async";
+import styles from "./ListingPage.module.css";
 
 const ListingPage = () => {
   const { postId } = useParams();
@@ -34,42 +35,55 @@ const ListingPage = () => {
               <title>{listing.title} | Squishtrade</title>
             </Helmet>
             <Page>
-              <h2>{listing.title}</h2>
-              <h3>Price: ${listing.price}</h3>
-              <p>Condition: {listing.condition}</p>
-              <p>Type: {listing.type}</p>
-              <p>{listing.description}</p>
-              {user && user.id === listing.author._id ? (
-                <>
-                  <Link to="edit">Edit</Link>
-                  <button
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Are you sure you want to delete this listing?"
-                        )
-                      ) {
-                        dispatch(deleteListing(listing._id))
-                          .unwrap()
-                          .then((res) => {
-                            navigate("/profile");
-                            toast.success(`Listing deleted.`);
-                          })
-                          .catch((err) => toast.error(err));
-                      }
-                    }}
-                  >
-                    Delete
-                  </button>
-                </>
-              ) : (
-                <button>Contact Seller</button>
-              )}
+              <article className={styles.listing}>
+                <h2 className={styles.title}>{listing.title}</h2>
+                <h3 className={styles.price}>Price: ${listing.price}</h3>
+                <p className={styles.condition}>
+                  Condition: {listing.condition}
+                </p>
+                <p className={styles.type}>Type: {listing.type}</p>
+                <p className={styles.description}>{listing.description}</p>
+                {user && user.id === listing.author._id ? (
+                  <div className={styles.links}>
+                    <Link to="edit" className={styles.link}>
+                      Edit
+                    </Link>
+                    <button
+                      className={styles.link}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete this listing?"
+                          )
+                        ) {
+                          dispatch(deleteListing(listing._id))
+                            .unwrap()
+                            .then((res) => {
+                              navigate("/profile");
+                              toast.success(`Listing deleted.`);
+                            })
+                            .catch((err) => toast.error(err));
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ) : (
+                  <button className={styles.link}>Contact Seller</button>
+                )}
 
-              <div className="seller">
-                <h3>Sold by: {listing.author.name}</h3>
-                <p>Contact email: {listing.author.email}</p>
-              </div>
+                <Link
+                  to={`/profile/${listing.author._id}`}
+                  className={styles.seller}
+                >
+                  <div className={styles["fake-avatar"]}></div>
+                  <div>
+                    <h3>Listed by: {listing.author.name}</h3>
+                    <p>Trades: 5</p>
+                  </div>
+                </Link>
+              </article>
             </Page>
           </>
         )}
