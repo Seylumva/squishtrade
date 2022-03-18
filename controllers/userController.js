@@ -2,8 +2,9 @@ const catchAsync = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const { AppError } = require("../middleware/errorMiddleware");
 const User = require("../models/userModel");
+const Listing = require("../models/listingModel");
 const generateToken = require("../util/generateToken");
-
+const mongoose = require("mongoose");
 // @route   GET /api/users
 // @desc    Get all users
 // @access  Private (Admin Only)
@@ -66,6 +67,23 @@ const loginUser = catchAsync(async (req, res) => {
   }
 });
 
+const getUserProfile = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  if (!mongoose.isValidObjectId(userId)) {
+    throw new AppError("Not a valid user ID.", 400);
+  }
+  const user = await User.findById(userId).select(["-password", "-isAdmin"]);
+  const listings = await Listing.find({ author: user._id });
+  if (user && listings) {
+    res.status(200).json({
+      user,
+      listings,
+    });
+  } else {
+    throw new AppError("Could not retrieve user or listing data.", 500);
+  }
+});
+
 const getUser = (req, res) => {
   res.status(200).json(req.user);
 };
@@ -75,4 +93,5 @@ module.exports = {
   registerUser,
   loginUser,
   getUser,
+  getUserProfile,
 };

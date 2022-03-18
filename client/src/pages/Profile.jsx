@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner";
 import Page from "../components/Page";
 import { Helmet } from "react-helmet-async";
 import { Link, Navigate } from "react-router-dom";
+import SignOutButton from "../components/SignOutButton";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const Profile = () => {
               <label htmlFor="name">Email: </label>
               <input type="text" value={user.email} id="email" disabled />
             </div>
+            <SignOutButton name={user.name} />
           </div>
           <Page title="Listings" fluid={true}>
             {listings && !listings.length && (
