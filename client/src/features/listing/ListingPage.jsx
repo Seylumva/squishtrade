@@ -79,8 +79,8 @@ const ListingPage = () => {
                 >
                   <div className={styles["fake-avatar"]}></div>
                   <div>
-                    <h3>Listed by: {listing.author.name}</h3>
-                    <p>Trades: 5</p>
+                    <h3>Listed by {listing.author.name}</h3>
+                    <p>Trades: #</p>
                   </div>
                 </Link>
               </article>
