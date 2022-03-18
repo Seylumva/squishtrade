@@ -3,6 +3,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import CreateListingForm from "../features/listing/CreateListingForm";
 import EditListingForm from "../features/listing/EditListingForm";
 import ListingPage from "../features/listing/ListingPage";
+import UserProfile from "../features/listing/UserProfile";
 import UserLoginForm from "../features/user/UserLoginForm";
 import UserRegistrationForm from "../features/user/UserRegistrationForm";
 import AllListings from "../pages/AllListings";
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Route path="/profile" element={<PrivateRoute />}>
           <Route index element={<Profile />} />
         </Route>
+        <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/listings" element={<AllListings />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
