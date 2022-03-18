@@ -38,7 +38,7 @@ const Profile = () => {
               <input type="text" value={user.name} id="name" disabled />
             </div>
             <div className={styles["form-group"]}>
-              <label htmlFor="name">Public email: </label>
+              <label htmlFor="name">Email: </label>
               <input type="text" value={user.email} id="email" disabled />
             </div>
           </div>
