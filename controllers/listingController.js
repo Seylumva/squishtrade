@@ -1,5 +1,5 @@
 const catchAsync = require("express-async-handler");
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const { AppError } = require("../middleware/errorMiddleware");
 const Listing = require("../models/listingModel");
 

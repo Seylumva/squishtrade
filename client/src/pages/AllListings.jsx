@@ -50,7 +50,7 @@ const AllListings = () => {
               <div className={styles.seller}>
                 <div className={styles["fake-avatar"]}></div>
                 <div>
-                  <h3>Sold by: {listing.author.name}</h3>
+                  <h3>Listed by {listing.author.name}</h3>
                   <p>Trades: #</p>
                 </div>
               </div>

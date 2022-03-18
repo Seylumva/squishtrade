@@ -28,7 +28,7 @@ const UserLoginForm = () => {
     }
 
     if (status === "success") {
-      toast.success(`Welcome! ${user.name}!`);
+      toast.success(`Welcome, ${user.name}!`);
       navigate(`/`);
     }
 
