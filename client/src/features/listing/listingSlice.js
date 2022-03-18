@@ -25,6 +25,24 @@ export const getUserListings = createAsyncThunk(
   }
 );
 
+export const getAllListings = createAsyncThunk(
+  "listing/getListings",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/all`);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getListing = createAsyncThunk(
   "listing/getListing",
   async (postId, thunkAPI) => {
@@ -174,6 +192,17 @@ const listingSlice = createSlice({
         state.status = "success";
       })
       .addCase(editListing.rejected, (state, action) => {
+        state.status = "error";
+        state.message = action.payload;
+      })
+      .addCase(getAllListings.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllListings.fulfilled, (state, action) => {
+        state.status = "success";
+        state.listings = action.payload;
+      })
+      .addCase(getAllListings.rejected, (state, action) => {
         state.status = "error";
         state.message = action.payload;
       });
