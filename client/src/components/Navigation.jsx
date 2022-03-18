@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./Navigation.module.css";
 import SignInOptions from "./SignInOptions";
-import SignOutButton from "./SignOutButton";
 const Navigation = ({ navOpen, closeNav }) => {
   const { user } = useSelector((state) => state.user);
   const navClasses = navOpen
@@ -22,15 +21,16 @@ const Navigation = ({ navOpen, closeNav }) => {
             Listings
           </Link>
         </li>
-        {user && (
+        {user ? (
           <li>
-            <Link to="profile" onClick={closeNav}>
-              Profile
+            <Link
+              to="profile"
+              className={styles["profile-link"]}
+              onClick={closeNav}
+            >
+              Profile ({user.name})<div className={styles["fake-avatar"]}></div>
             </Link>
           </li>
-        )}
-        {user ? (
-          <SignOutButton name={user.name} closeNav={closeNav} />
         ) : (
           <SignInOptions closeNav={closeNav} />
         )}

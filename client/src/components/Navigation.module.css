@@ -50,18 +50,31 @@
   }
   .nav > ul {
     flex-direction: row;
+    align-items: center;
     width: unset;
     padding: 0;
     gap: 2rem;
   }
   .nav a,
   .nav button {
-    color: rgb(18, 18, 18);
+    color: hsl(0, 0%, 50%);
     font-weight: 500;
-    transition: border-bottom 250ms ease;
+    transition: color 350ms ease;
   }
   .nav a:hover,
   .nav button:hover {
-    color: unset;
+    color: hsl(0, 0%, 5);
+    border-bottom: 2px solid transparent;
+  }
+  .profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .fake-avatar {
+    width: 30px;
+    height: 30px;
+    background: rgb(18, 18, 18);
+    border-radius: 50%;
   }
 }
