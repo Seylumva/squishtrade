@@ -17,6 +17,11 @@ const Navigation = ({ navOpen, closeNav }) => {
             Home
           </Link>
         </li>
+        <li className="nav__item">
+          <Link to="/listings" className="nav__link" onClick={closeNav}>
+            Listings
+          </Link>
+        </li>
         {user && (
           <li>
             <Link to="profile" onClick={closeNav}>
