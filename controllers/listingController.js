@@ -4,10 +4,11 @@ const { AppError } = require("../middleware/errorMiddleware");
 const Listing = require("../models/listingModel");
 
 const getAllListings = catchAsync(async (req, res) => {
-  if (!req.user) {
-    throw new AppError("Not authorized.", 403);
-  }
-  const allListings = await Listing.find();
+  const allListings = await Listing.find().populate("author", [
+    "-password",
+    "-isAdmin",
+    "-email",
+  ]);
   if (allListings) {
     res.status(200).json(allListings);
   } else {
