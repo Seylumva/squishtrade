@@ -7,7 +7,9 @@ const SignOutButton = ({ name, closeNav }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
-    closeNav();
+    if (closeNav) {
+      closeNav();
+    }
     if (name) {
       toast.info(`See you later, ${name}!`);
     }
@@ -15,11 +17,20 @@ const SignOutButton = ({ name, closeNav }) => {
     navigate("/");
   };
   return (
-    <li className="nav__item">
-      <button className="nav__link" onClick={handleLogout}>
-        Logout
-      </button>
-    </li>
+    <button
+      className="nav__link"
+      onClick={handleLogout}
+      style={{
+        padding: "0.5em",
+        background: "#bb0000",
+        color: "whitesmoke",
+        borderRadius: "8px",
+        border: "none",
+        cursor: "pointer",
+      }}
+    >
+      Logout
+    </button>
   );
 };
 
