@@ -1,11 +1,11 @@
-.hero {
+.hero,
+.services {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
   text-align: center;
-  min-height: 800px;
   position: relative;
   color: rgb(18, 18, 18);
 }
@@ -37,10 +37,29 @@
 }
 
 .patty {
+  width: 75px;
+}
+
+.avery {
   width: 125px;
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 960px) {
+  .patty {
+    width: 125px;
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+  }
+
+  .avery {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 175px;
+    margin: 0;
+  }
 }
 
 .services {
@@ -63,11 +82,4 @@
 .service p {
   font-size: 1.2rem;
   line-height: 1.5;
-}
-
-.avery {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  width: 175px;
 }

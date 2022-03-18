@@ -13,22 +13,22 @@ const Home = () => {
       </Helmet>
       <Page fluid={false}>
         <div className={styles.hero}>
-          <h2>
-            Find your ISOs and DISOs for retail prices from fellow collectors
-          </h2>
-          <p>
-            Join a community-driven marketplace with the purpose to rehome
-            Squishmallow to real collectiors
-          </p>
-          <div className={styles.links}>
-            <Link to="/about">Learn More</Link>
-            <Link to="/listing/new">Start Listing</Link>
-          </div>
           <img
             src={Patty}
             alt="Patty the Cow Squishmallow"
             className={styles.patty}
           />
+          <h2>
+            Find your ISOs and DISOs for retail prices from fellow collectors
+          </h2>
+          <p>
+            Join a community-driven marketplace with the purpose to rehome
+            Squishmallow to real collectors
+          </p>
+          <div className={styles.links}>
+            <Link to="/about">Learn More</Link>
+            <Link to="/listing/new">Start Listing</Link>
+          </div>
         </div>
       </Page>
       <Page fluid={false}>
