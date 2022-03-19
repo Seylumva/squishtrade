@@ -27,6 +27,7 @@ const SignOutButton = ({ name, closeNav }) => {
         borderRadius: "8px",
         border: "none",
         cursor: "pointer",
+        width: "100%",
       }}
     >
       Logout
