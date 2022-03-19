@@ -1,3 +1,4 @@
+import { Image, Transformation } from "cloudinary-react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -48,7 +49,13 @@ const AllListings = () => {
               </p>
               <p className={styles.price}>${listing.price}</p>
               <div className={styles.seller}>
-                <div className={styles["fake-avatar"]}></div>
+                <Image
+                  cloudName="seylumva"
+                  publicId={listing.author.avatarUrl}
+                  style={{ borderRadius: "50%" }}
+                >
+                  <Transformation width="35" height="35" crop="fill" />
+                </Image>
                 <div>
                   <h3>Listed by {listing.author.name}</h3>
                   <p>Trades: #</p>

@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  avatarUrl: {
+    type: String,
+    default: "Squishtrade/default_avatar_d61hqi.png",
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

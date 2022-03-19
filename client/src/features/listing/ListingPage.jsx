@@ -7,6 +7,7 @@ import Page from "../../components/Page";
 import Spinner from "../../components/Spinner";
 import { Helmet } from "react-helmet-async";
 import styles from "./ListingPage.module.css";
+import { Image, Transformation } from "cloudinary-react";
 
 const ListingPage = () => {
   const { postId } = useParams();
@@ -77,7 +78,13 @@ const ListingPage = () => {
                   to={`/profile/${listing.author._id}`}
                   className={styles.seller}
                 >
-                  <div className={styles["fake-avatar"]}></div>
+                  <Image
+                    cloudName="seylumva"
+                    publicId={listing.author.avatarUrl}
+                    style={{ borderRadius: "50%" }}
+                  >
+                    <Transformation width="35" height="35" crop="fill" />
+                  </Image>
                   <div>
                     <h3>Listed by {listing.author.name}</h3>
                     <p>Trades: #</p>

@@ -11,6 +11,53 @@ const initialState = {
 
 const API_URL = "/api/users";
 
+export const refreshUserData = createAsyncThunk(
+  "user/refreshUser",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/me`, {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const changeAvatar = createAsyncThunk(
+  "user/changeAvatar",
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axios.put(`${API_URL}/me/avatar`, formData, {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      if (response.data) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const register = createAsyncThunk(
   "user/register",
   async (formData, thunkAPI) => {
@@ -92,6 +139,28 @@ const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(refreshUserData.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(refreshUserData.fulfilled, (state, action) => {
+        state.status = "success";
+        state.user = action.payload;
+      })
+      .addCase(refreshUserData.rejected, (state, action) => {
+        state.status = "error";
+        state.message = action.payload;
+      })
+      .addCase(changeAvatar.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(changeAvatar.fulfilled, (state, action) => {
+        state.status = "success";
+        state.user = action.payload;
+      })
+      .addCase(changeAvatar.rejected, (state, action) => {
+        state.status = "error";
+        state.message = action.payload;
       });
   },
 });

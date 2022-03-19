@@ -1,3 +1,4 @@
+import { Image, Transformation } from "cloudinary-react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +38,9 @@ const UserProfile = () => {
             </Helmet>
             <Page fluid={false} title={`${profile.name}'s Profile`}>
               <div className={styles.profile}>
+                <Image cloudName="seylumva" publicId={profile.avatarUrl}>
+                  <Transformation width="125" height="125" crop="fill" />
+                </Image>
                 <div className={styles["form-group"]}>
                   <label htmlFor="name">Contact email: </label>
                   <input

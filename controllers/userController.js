@@ -45,6 +45,7 @@ const registerUser = catchAsync(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      avatarUrl: user.avatarUrl,
     });
   } else {
     throw new AppError("Invalid user data.", 403);
@@ -61,6 +62,7 @@ const loginUser = catchAsync(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      avatarUrl: user.avatarUrl,
     });
   } else {
     throw new AppError("Invalid credentials.", 401);
@@ -84,6 +86,27 @@ const getUserProfile = catchAsync(async (req, res) => {
   }
 });
 
+const updateUserAvatar = catchAsync(async (req, res) => {
+  const { _id: userId } = req.user;
+  const { avatarUrl } = req.body;
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { avatarUrl },
+    { returnDocument: "after" }
+  ).select(["-password", "-isAdmin"]);
+  if (user) {
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      avatarUrl: user.avatarUrl,
+      token: generateToken(user._id),
+    });
+  } else {
+    throw new AppError("Something went wrong.", 500);
+  }
+});
+
 const getUser = (req, res) => {
   res.status(200).json(req.user);
 };
@@ -94,4 +117,5 @@ module.exports = {
   loginUser,
   getUser,
   getUserProfile,
+  updateUserAvatar,
 };
