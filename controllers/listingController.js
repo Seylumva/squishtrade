@@ -34,7 +34,7 @@ const getListing = catchAsync(async (req, res) => {
 
 const getUserListings = catchAsync(async (req, res) => {
   if (!req.user) {
-    throw new AppError("You must be logegd in.", 400);
+    throw new AppError("Invalid user.", 400);
   }
   const { _id: id } = req.user;
   const userListings = await Listing.find({ author: id });
@@ -46,7 +46,11 @@ const getUserListings = catchAsync(async (req, res) => {
 });
 
 const createListing = catchAsync(async (req, res) => {
+  if (!req.user) {
+    throw new AppError("You must create an account to make a listing.", 403);
+  }
   const { _id: userId } = req.user;
+
   const { title, description, price, type, condition } = req.body;
   if (!title || !description || !price || !type || !condition) {
     throw new AppError("Please provide all the necessary fields.", 400);
