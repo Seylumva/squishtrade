@@ -2,6 +2,7 @@ import styles from "./Header.module.css";
 import { useState } from "react";
 import NavigationToggle from "./NavigationToggle";
 import Navigation from "./Navigation";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -11,7 +12,9 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles["container-row"]}>
-        <h1 className={styles.title}>Squishtrade</h1>
+        <Link to="/" className={styles.title}>
+          Squishtrade
+        </Link>
         <Navigation navOpen={navOpen} closeNav={closeNav} />
         <NavigationToggle navOpen={navOpen} setNavOpen={setNavOpen} />
       </div>

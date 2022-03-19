@@ -8,6 +8,9 @@
 
 .title {
   font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  color: rgb(18, 18, 18);
 }
 
 /* Header wrapper */
