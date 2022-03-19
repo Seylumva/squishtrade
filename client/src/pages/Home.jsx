@@ -26,13 +26,13 @@ const Home = () => {
             Squishmallow to real collectors
           </p>
           <div className={styles.links}>
-            <Link to="/about">Learn More</Link>
+            <a href="#about">Learn More</a>
             <Link to="/listing/new">Start Listing</Link>
           </div>
         </div>
       </Page>
       <Page fluid={false}>
-        <section className={styles.services}>
+        <section className={styles.services} id="about">
           <article className={styles.service}>
             <h3>No fees, no catch</h3>
             <p>
