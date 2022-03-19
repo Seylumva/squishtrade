@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./Navigation.module.css";
 import SignInOptions from "./SignInOptions";
+import { Image, Transformation } from "cloudinary-react";
+
 const Navigation = ({ navOpen, closeNav }) => {
   const { user } = useSelector((state) => state.user);
   const navClasses = navOpen
@@ -28,7 +30,14 @@ const Navigation = ({ navOpen, closeNav }) => {
               className={styles["profile-link"]}
               onClick={closeNav}
             >
-              Profile ({user.name})<div className={styles["fake-avatar"]}></div>
+              Profile ({user.name})
+              <Image
+                cloudName="seylumva"
+                publicId={user.avatarUrl}
+                style={{ borderRadius: "50%" }}
+              >
+                <Transformation width="35" height="35" crop="fill" />
+              </Image>
             </Link>
           </li>
         ) : (
