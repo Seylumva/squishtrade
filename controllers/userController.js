@@ -109,7 +109,10 @@ const updateUserAvatar = catchAsync(async (req, res) => {
 
 const getUser = (req, res) => {
   res.status(200).json({
-    ...req.user._doc,
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    avatarUrl: req.user.avatarUrl,
     token: generateToken(req.user.id),
   });
 };
