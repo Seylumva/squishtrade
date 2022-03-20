@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Navigation.module.css";
 import SignInOptions from "./SignInOptions";
 import { Image, Transformation } from "cloudinary-react";
-import { refreshUserData } from "../features/user/userSlice";
+import { refreshUserData, reset } from "../features/user/userSlice";
 import { useEffect } from "react";
 
 const Navigation = ({ navOpen, closeNav }) => {
@@ -13,7 +13,7 @@ const Navigation = ({ navOpen, closeNav }) => {
   // update the user state from the server across other devices
   useEffect(() => {
     if (user) {
-      dispatch(refreshUserData());
+      dispatch(refreshUserData()).then(() => dispatch(reset()));
     }
     // eslint-disable-next-line
   }, [dispatch]);
