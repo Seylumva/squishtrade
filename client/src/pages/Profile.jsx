@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserListings, reset } from "../features/listing/listingSlice";
@@ -9,12 +9,12 @@ import { Helmet } from "react-helmet-async";
 import { Link, Navigate } from "react-router-dom";
 import SignOutButton from "../components/SignOutButton";
 import { Image, Transformation } from "cloudinary-react";
-import { changeAvatar } from "../features/user/userSlice";
+import { changeAvatar, reset as userReset } from "../features/user/userSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { listings, status, message } = useSelector((state) => state.listing);
   const { user } = useSelector((state) => state.user);
+  const { listings, status, message } = useSelector((state) => state.listing);
 
   useEffect(() => {
     dispatch(getUserListings());
@@ -40,7 +40,7 @@ const Profile = () => {
         const thunkData = {
           avatarUrl: res.public_id,
         };
-        dispatch(changeAvatar(thunkData));
+        dispatch(changeAvatar(thunkData)).then(() => dispatch(userReset()));
       } catch (error) {
         console.log(error);
       }

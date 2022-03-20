@@ -3,7 +3,6 @@ import Page from "../components/Page";
 import { Helmet } from "react-helmet-async";
 import Francis from "../assets/Francis.png";
 import styles from "./NotFound.module.css";
-
 const NotFound = () => {
   return (
     <>
