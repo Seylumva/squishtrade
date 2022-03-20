@@ -1,11 +1,23 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "./Navigation.module.css";
 import SignInOptions from "./SignInOptions";
 import { Image, Transformation } from "cloudinary-react";
+import { refreshUserData } from "../features/user/userSlice";
+import { useEffect } from "react";
 
 const Navigation = ({ navOpen, closeNav }) => {
   const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  // Runs once when the page is first opened or refreshed to
+  // update the user state from the server across other devices
+  useEffect(() => {
+    if (user) {
+      dispatch(refreshUserData());
+    }
+    // eslint-disable-next-line
+  }, [dispatch]);
+
   const navClasses = navOpen
     ? `${styles.nav} ${styles["nav--visible"]}`
     : styles.nav;

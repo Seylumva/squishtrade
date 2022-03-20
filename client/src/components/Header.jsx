@@ -3,7 +3,6 @@ import { useState } from "react";
 import NavigationToggle from "./NavigationToggle";
 import Navigation from "./Navigation";
 import { Link } from "react-router-dom";
-
 const Header = () => {
   const [navOpen, setNavOpen] = useState(false);
   const closeNav = () => {

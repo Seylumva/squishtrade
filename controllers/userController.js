@@ -108,7 +108,10 @@ const updateUserAvatar = catchAsync(async (req, res) => {
 });
 
 const getUser = (req, res) => {
-  res.status(200).json(req.user);
+  res.status(200).json({
+    ...req.user._doc,
+    token: generateToken(req.user.id),
+  });
 };
 
 module.exports = {
