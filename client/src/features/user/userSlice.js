@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { registerUser, loginUser, changeUserAvatar } from "./userServices";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -20,6 +21,9 @@ export const refreshUserData = createAsyncThunk(
           Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
         },
       });
+      if (response.data) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
       return response.data;
     } catch (error) {
       const message =
@@ -36,67 +40,21 @@ export const refreshUserData = createAsyncThunk(
 export const changeAvatar = createAsyncThunk(
   "user/changeAvatar",
   async (formData, thunkAPI) => {
-    try {
-      const response = await axios.put(`${API_URL}/me/avatar`, formData, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await changeUserAvatar(formData, thunkAPI);
   }
 );
 
 export const register = createAsyncThunk(
   "user/register",
   async (formData, thunkAPI) => {
-    try {
-      const response = await axios.post(`${API_URL}/register`, formData);
-      if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await registerUser(formData, thunkAPI);
   }
 );
 
 export const login = createAsyncThunk(
   "user/login",
   async (formData, thunkAPI) => {
-    try {
-      const response = await axios.post(`${API_URL}/login`, formData);
-      if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await loginUser(formData, thunkAPI);
   }
 );
 
