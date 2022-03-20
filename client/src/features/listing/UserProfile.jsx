@@ -3,10 +3,8 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
-import Page from "../../components/Page";
 import Spinner from "../../components/Spinner";
 import { getUserProfile, reset } from "./listingSlice";
-import styles from "./UserProfile.module.css";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -36,50 +34,95 @@ const UserProfile = () => {
             <Helmet>
               <title>{profile.name}'s Profile | Squishtrade</title>
             </Helmet>
-            <Page fluid={false} title={`${profile.name}'s Profile`}>
-              <div className={styles.profile}>
-                <Image cloudName="seylumva" publicId={profile.avatarUrl}>
-                  <Transformation width="125" height="125" crop="fill" />
-                </Image>
-                <div className={styles["form-group"]}>
-                  <label htmlFor="name">Contact email: </label>
-                  <input
-                    type="text"
-                    value={profile.email}
-                    id="email"
-                    disabled
-                  />
-                </div>
-              </div>
-              <Page title={`Listings by ${profile.name}`} fluid={true}>
-                {listings && !listings.length && (
-                  <p className={styles.empty}>
-                    It appears this user doesn't have any listings.
-                  </p>
-                )}
-                <article className={styles.listings}>
-                  {listings &&
-                    listings.map((listing) => (
-                      <Link
-                        to={`/listing/${listing._id}`}
-                        className={styles.listing}
-                        key={listing._id}
-                      >
-                        <h3 className={styles.title}>{listing.title}</h3>
-                        <p className={styles.condition}>
-                          <span>Condition:</span> {listing.condition}
-                        </p>
-
-                        <p className={styles.type}>
-                          <span>Type:</span> {listing.type}
-                        </p>
-
-                        <p className={styles.price}>${listing.price}</p>
-                      </Link>
-                    ))}
+            <div className="min-h-screen bg-base-200 w-full pt-12">
+              <section>
+                <header className="mb-8">
+                  <h2 className="text-center text-2xl font-semibold">
+                    Profile
+                  </h2>
+                </header>
+                <article className="flex justify-center max-w-sm mx-auto gap-8">
+                  {/* Avatar */}
+                  <div className="flex flex-col gap-3 justify-center">
+                    <div className="avatar">
+                      <div className="w-24 mask mask-squircle">
+                        <Image
+                          className="mx-auto"
+                          cloudName="seylumva"
+                          publicId={profile.avatarUrl}
+                        >
+                          <Transformation
+                            width="125"
+                            height="125"
+                            crop="fill"
+                          />
+                        </Image>
+                      </div>
+                    </div>
+                  </div>
+                  {/* profile information */}
+                  <div className="flex flex-col pt-5 flex-grow">
+                    <h3>
+                      Name:{" "}
+                      <span className="font-semibold">{profile.name}</span>
+                    </h3>
+                    <h4>
+                      Email:{" "}
+                      <span className="font-semibold">{profile.email}</span>
+                    </h4>
+                  </div>
                 </article>
-              </Page>
-            </Page>
+              </section>
+              <div className="divider"></div>
+              <section>
+                <header className="mb-8">
+                  <h2 className="text-center text-2xl font-semibold">
+                    Listings
+                    {listings &&
+                      listings.length !== 0 &&
+                      ` (${listings.length})`}
+                  </h2>
+                </header>
+                <article>
+                  {listings && listings.length ? (
+                    <div className="px-5 mx-auto container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                      {listings.map((listing) => (
+                        <Link
+                          className="p-5 bg-base-300 outline outline-base-200 hover:bg-base-100 hover:outline-base-300 transition rounded-md shadow-xl relative"
+                          to={`/listing/${listing._id}`}
+                          key={listing._id}
+                        >
+                          <h4 className="text-xl font-semibold">
+                            {listing.title}
+                          </h4>
+                          <p>
+                            Type:{" "}
+                            <span className="font-semibold">
+                              {listing.type}
+                            </span>
+                          </p>
+                          <p>
+                            Condition:{" "}
+                            <span className="font-semibold">
+                              {listing.condition}
+                            </span>
+                          </p>
+                          <p className="text-primary text-4xl font-semibold absolute bottom-5 right-5">
+                            ${listing.price}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-lg text-center mb-5">
+                        Doesn't seem like they have any listings.
+                      </p>
+                    </>
+                  )}
+                </article>
+              </section>
+            </div>
           </>
         )}
       </>

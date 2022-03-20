@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { register, reset } from "./userSlice";
-import Page from "../../components/Page";
-import styles from "./UserForm.module.css";
 import { Helmet } from "react-helmet-async";
 import Spinner from "../../components/Spinner";
 
@@ -78,55 +76,55 @@ const UserRegistrationForm = () => {
       <Helmet>
         <title>Register | Squishtrade</title>
       </Helmet>
-      <Page title="Register" caption="Sign up to get started" fluid={false}>
-        <form onSubmit={handleRegister} className={styles.form}>
-          <div className={styles["form-group"]}>
-            <label htmlFor="name">Username: </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="email">Email: </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="password">Password: </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="password2">Verify Password: </label>
-            <input
-              type="password"
-              name="password2"
-              id="password2"
-              value={formData.password2}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <button>Sign Up</button>
+      <div className="min-h-screen bg-base-200 w-full pt-12">
+        <h2 className="text-center text-3xl font-medium mb-12">Register</h2>
+        <form
+          onSubmit={handleRegister}
+          className="max-w-sm flex flex-col items-center mx-auto gap-3"
+        >
+          <input
+            type="text"
+            placeholder="Full name"
+            className="input input-bordered w-full"
+            name="name"
+            id="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Email"
+            className="input input-bordered w-full"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            className="input input-bordered w-full"
+            placeholder="Password"
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            className="input input-bordered w-full"
+            placeholder="Password"
+            type="password"
+            name="password2"
+            id="password2"
+            value={formData.password2}
+            onChange={handleInputChange}
+            required
+          />
+          <button className="btn btn-block">Sign Up</button>
         </form>
-      </Page>
+      </div>
     </>
   );
 };

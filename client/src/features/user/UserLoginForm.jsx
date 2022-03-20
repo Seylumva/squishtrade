@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "./userSlice";
-import Page from "../../components/Page";
-import styles from "./UserForm.module.css";
 import { Helmet } from "react-helmet-async";
 import Spinner from "../../components/Spinner";
 
@@ -66,35 +64,35 @@ const UserLoginForm = () => {
       <Helmet>
         <title>Login | Squishtrade</title>
       </Helmet>
-      <Page title="Login" caption="Sign in to get started" fluid={false}>
-        <form onSubmit={handleLogin} className={styles.form}>
-          <div className={styles["form-group"]}>
-            <label htmlFor="email">Email: </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="password">Password: </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className={styles["form-group"]}>
-            <button>Sign In</button>
-          </div>
+      <div className="min-h-screen bg-base-200 w-full pt-12">
+        <h2 className="text-center text-3xl font-medium mb-12">Log In</h2>
+        <form
+          onSubmit={handleLogin}
+          className="max-w-sm flex flex-col items-center mx-auto gap-3"
+        >
+          <input
+            type="text"
+            placeholder="Email"
+            className="input input-bordered w-full"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            className="input input-bordered w-full"
+            placeholder="Password"
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <button className="btn btn-block">Sign In</button>
         </form>
-      </Page>
+      </div>
     </>
   );
 };

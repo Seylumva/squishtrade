@@ -1,29 +1,32 @@
 import { Link } from "react-router-dom";
-import Page from "../components/Page";
 import { Helmet } from "react-helmet-async";
 import Francis from "../assets/Francis.png";
-import styles from "./NotFound.module.css";
+
 const NotFound = () => {
   return (
     <>
       <Helmet>
         <title>404 Not found | Squishtrade</title>
       </Helmet>
-      <Page
-        title="404 Not Found"
-        caption="Doesn't look like Francis is at this Walgreens... I mean page!"
-      >
-        <article className={styles.notfound}>
+      <section className="min-h-screen bg-base-200 w-full pt-12">
+        <header className="space-y-3">
+          <h2 className="text-3xl font-semibold text-center">
+            No Squishmallows here...
+          </h2>
+          <p className="text-lg text-center">
+            This page appears to be broken or missing.{" "}
+            <Link to="/" className="link link-secondary link-hover">
+              Click here
+            </Link>{" "}
+            to get home in the meantime.
+          </p>
           <img
             src={Francis}
-            className={styles.francis}
             alt="Francis the Lion Squishmallow"
+            className="w-32 mx-auto pt-5"
           />
-          <p style={{ textAlign: "center" }}>
-            You can click <Link to="/">here</Link> to go to the homepage.
-          </p>
-        </article>
-      </Page>
+        </header>
+      </section>
     </>
   );
 };

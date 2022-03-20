@@ -1,5 +1,3 @@
-import Page from "../../components/Page";
-import styles from "./ListingForm.module.css";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
@@ -15,14 +13,15 @@ const EditListingForm = () => {
   const { user } = useSelector((state) => state.user);
   const { status, listing, message } = useSelector((state) => state.listing);
   const [formData, setFormData] = useState({
+    _id: null,
     title: "",
     price: "0",
     description: "",
-    type: "Standard",
-    condition: "Brand New",
+    type: "",
+    condition: "",
   });
 
-  if (listing && listing.title !== formData.title) {
+  if (listing && listing._id !== formData._id) {
     setFormData({ ...listing });
   }
 
@@ -91,44 +90,71 @@ const EditListingForm = () => {
       <Helmet>
         <title>Edit Listing | Squishtrade</title>
       </Helmet>
-      <Page title="Edit Listing">
-        <form className={styles.form} onSubmit={handleListingEdit}>
-          <div className={styles["form-group"]}>
-            <label htmlFor="title">Title:</label>
+      <div className="min-h-screen bg-base-200 w-full pt-12">
+        <h2 className="text-center text-3xl font-medium mb-8">New Listing</h2>
+        <form
+          className="max-w-sm flex flex-col items-center mx-auto gap-1"
+          onSubmit={handleListingEdit}
+        >
+          {/* Title */}
+          <div className="form-control w-full">
+            <label htmlFor="title" className="label">
+              <span className="label-text">Title</span>
+            </label>
             <input
               type="text"
+              placeholder="Title"
+              className="input input-bordered"
               name="title"
               id="title"
-              defaultValue={formData.title}
               onChange={handleInputChange}
-              disabled
+              value={formData.title}
+              required
             />
           </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="price">Price: (in USD)</label>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              min="0"
-              defaultValue={formData.price}
-              onChange={handleInputChange}
-            />
+          {/* Squish Price */}
+          <div className="form-control w-full">
+            <label htmlFor="price" className="label">
+              <span className="label-text">Price</span>
+            </label>
+            <label className="input-group">
+              <span>$</span>
+              <input
+                type="number"
+                placeholder="Price (USD)"
+                className="input input-bordered flex-grow"
+                name="price"
+                id="price"
+                onChange={handleInputChange}
+                value={formData.price}
+                required
+              />
+              <span>USD</span>
+            </label>
           </div>
-          <div className={styles["form-group"]}>
-            <label htmlFor="description">Description:</label>
+          {/* Squish Description */}
+          <div className="form-control w-full">
+            <label htmlFor="description" className="label">
+              <span className="label-text">Description</span>
+            </label>
             <textarea
-              type="text"
+              className="textarea textarea-bordered resize-y w-full"
+              style={{ minHeight: "250px" }}
+              placeholder="Description"
               name="description"
               id="description"
-              defaultValue={formData.description}
               onChange={handleInputChange}
+              value={formData.description}
             ></textarea>
           </div>
-          <div className={styles.row}>
-            <div className={styles["form-group"]}>
-              <label htmlFor="type">Type:</label>
+          <div className="flex w-full justify-between items-center gap-5">
+            {/* Squish Type */}
+            <div className="form-control flex-grow">
+              <label className="label" htmlFor="type">
+                <span className="label-text">Squishmallow type</span>
+              </label>
               <select
+                className="select select-bordered"
                 name="type"
                 id="type"
                 onChange={handleInputChange}
@@ -139,10 +165,15 @@ const EditListingForm = () => {
                 <option value="Squeezemallow">Squeezemallow</option>
                 <option value="Tin">Tin</option>
               </select>
+              <label className="label"></label>
             </div>
-            <div className={styles["form-group"]}>
-              <label htmlFor="condition">Condition:</label>
+            {/* Squish Condition */}
+            <div className="form-control flex-grow">
+              <label htmlFor="condition" className="label">
+                <span className="label-text">Squishmallow type</span>
+              </label>
               <select
+                className="select select-bordered"
                 name="condition"
                 id="condition"
                 onChange={handleInputChange}
@@ -152,13 +183,12 @@ const EditListingForm = () => {
                 <option value="Like New">Like New</option>
                 <option value="Used">Used</option>
               </select>
+              <label className="label"></label>
             </div>
           </div>
-          <div className={styles["form-group"]}>
-            <button>Submit</button>
-          </div>
+          <button className="btn btn-block btn-primary">Submit</button>
         </form>
-      </Page>
+      </div>
     </>
   );
 };

@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserListings, reset } from "../features/listing/listingSlice";
-import styles from "./Profile.module.css";
 import Spinner from "../components/Spinner";
-import Page from "../components/Page";
 import { Helmet } from "react-helmet-async";
 import { Link, Navigate } from "react-router-dom";
 import SignOutButton from "../components/SignOutButton";
@@ -25,10 +23,10 @@ const Profile = () => {
 
   const handleAvatarSubmit = async (e) => {
     e.preventDefault();
-    if (e.target.elements[0].files[0]) {
+    if (e.target.files[0]) {
       try {
         const formData = new FormData();
-        formData.append("file", e.target.elements[0].files[0]);
+        formData.append("file", e.target.files[0]);
         formData.append("upload_preset", "squishtrade_assets");
         const res = await fetch(
           "https://api.cloudinary.com/v1_1/seylumva/image/upload",
@@ -58,56 +56,115 @@ const Profile = () => {
         {user && (
           <>
             <Helmet>
-              <title>Profile | Squishtrade</title>
+              <title>Your Profile | Squishtrade</title>
             </Helmet>
-            <Page fluid={false} title="Profile">
-              <div className={styles.profile}>
-                <Image cloudName="seylumva" publicId={user.avatarUrl}>
-                  <Transformation width="125" height="125" crop="fill" />
-                </Image>
-                <form onSubmit={handleAvatarSubmit}>
-                  <input type="file" /> <button>Submit</button>
-                </form>
-                <div className={styles["form-group"]}>
-                  <label htmlFor="name">Username: </label>
-                  <input type="text" value={user.name} id="name" disabled />
-                </div>
-                <div className={styles["form-group"]}>
-                  <label htmlFor="name">Email: </label>
-                  <input type="text" value={user.email} id="email" disabled />
-                </div>
-                <SignOutButton name={user.name} />
-              </div>
-              <Page title="Listings" fluid={true}>
-                {listings && !listings.length && (
-                  <p className={styles.empty}>
-                    It appears you don't have any listings, get started{" "}
-                    <Link to="/listing/new">here!</Link>
-                  </p>
-                )}
-                <article className={styles.listings}>
-                  {listings &&
-                    listings.map((listing) => (
-                      <Link
-                        to={`/listing/${listing._id}`}
-                        className={styles.listing}
-                        key={listing._id}
-                      >
-                        <h3 className={styles.title}>{listing.title}</h3>
-                        <p className={styles.condition}>
-                          <span>Condition:</span> {listing.condition}
-                        </p>
-
-                        <p className={styles.type}>
-                          <span>Type:</span> {listing.type}
-                        </p>
-
-                        <p className={styles.price}>${listing.price}</p>
-                      </Link>
-                    ))}
+            <div className="min-h-screen bg-base-200 w-full pt-12">
+              <section>
+                <header className="mb-8">
+                  <h2 className="text-center text-2xl font-semibold">
+                    Profile
+                  </h2>
+                </header>
+                <article className="flex justify-center max-w-sm mx-auto gap-8">
+                  {/* Avatar and upload */}
+                  <div className="flex flex-col gap-3 justify-center">
+                    <div className="avatar">
+                      <div className="w-24 mask mask-squircle">
+                        <Image
+                          className="mx-auto"
+                          cloudName="seylumva"
+                          publicId={user.avatarUrl}
+                        >
+                          <Transformation
+                            width="125"
+                            height="125"
+                            crop="fill"
+                          />
+                        </Image>
+                      </div>
+                    </div>
+                    <label
+                      htmlFor="avatar"
+                      className="btn btn-outline btn-primary btn-sm"
+                    >
+                      Upload
+                    </label>
+                    <input
+                      onChange={handleAvatarSubmit}
+                      type="file"
+                      className="hidden mt-auto"
+                      name="avatar"
+                      id="avatar"
+                    />
+                  </div>
+                  {/* User information */}
+                  <div className="flex flex-col pt-5 flex-grow">
+                    <h3 className="pl-3">
+                      Name: <span className="font-semibold">{user.name}</span>
+                    </h3>
+                    <h4 className="pl-3">
+                      Email: <span className="font-semibold">{user.email}</span>
+                    </h4>
+                    <SignOutButton
+                      className="btn btn-error btn-outline btn-sm mt-auto"
+                      name={user.name}
+                    />
+                  </div>
                 </article>
-              </Page>
-            </Page>
+              </section>
+              <div className="divider"></div>
+              <section>
+                <header className="mb-8">
+                  <h2 className="text-center text-2xl font-semibold">
+                    Listings
+                    {listings &&
+                      listings.length !== 0 &&
+                      ` (${listings.length})`}
+                  </h2>
+                </header>
+                <article>
+                  {listings && listings.length ? (
+                    <div className="px-5 mx-auto container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                      {listings.map((listing) => (
+                        <Link
+                          className="p-5 bg-base-300 outline outline-base-200 hover:bg-base-100 hover:outline-base-300 transition rounded-md shadow-xl relative"
+                          to={`/listing/${listing._id}`}
+                          key={listing._id}
+                        >
+                          <h4 className="text-xl font-semibold">
+                            {listing.title}
+                          </h4>
+                          <p>
+                            Type:{" "}
+                            <span className="font-semibold">
+                              {listing.type}
+                            </span>
+                          </p>
+                          <p>
+                            Condition:{" "}
+                            <span className="font-semibold">
+                              {listing.condition}
+                            </span>
+                          </p>
+                          <p className="text-primary text-4xl font-semibold absolute bottom-5 right-5">
+                            ${listing.price}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-lg text-center mb-5">
+                        Doesn't seem like you have any listings.
+                      </p>
+                      <button className="mx-auto btn btn-wide block">
+                        Start listing
+                      </button>
+                    </>
+                  )}
+                </article>
+              </section>
+            </div>
           </>
         )}
       </>
