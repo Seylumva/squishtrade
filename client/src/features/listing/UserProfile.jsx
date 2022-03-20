@@ -19,7 +19,7 @@ const UserProfile = () => {
     return () => {
       dispatch(reset());
     };
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   if (status === "loading") {
     return <Spinner />;
