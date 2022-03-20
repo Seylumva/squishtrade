@@ -6,6 +6,7 @@ import Page from "../components/Page";
 import Spinner from "../components/Spinner";
 import { getAllListings } from "../features/listing/listingSlice";
 import styles from "./AllListings.module.css";
+import { Helmet } from "react-helmet-async";
 
 const AllListings = () => {
   const { listings, status } = useSelector((state) => state.listing);
@@ -31,40 +32,45 @@ const AllListings = () => {
   }
 
   return (
-    <Page title="All Listings">
-      <div className={styles.listings}>
-        {listings &&
-          listings.map((listing) => (
-            <Link
-              className={styles.listing}
-              key={listing._id}
-              to={`/listing/${listing._id}`}
-            >
-              <h3 className={styles.title}>{listing.title}</h3>
-              <p className={styles.condition}>
-                <span>Condition:</span> {listing.condition}
-              </p>
-              <p className={styles.type}>
-                <span>Type:</span> {listing.type}
-              </p>
-              <p className={styles.price}>${listing.price}</p>
-              <div className={styles.seller}>
-                <Image
-                  cloudName="seylumva"
-                  publicId={listing.author.avatarUrl}
-                  style={{ borderRadius: "50%" }}
-                >
-                  <Transformation width="35" height="35" crop="fill" />
-                </Image>
-                <div>
-                  <h3>Listed by {listing.author.name}</h3>
-                  <p>Trades: #</p>
+    <>
+      <Helmet>
+        <title>All listings | Squishtrade</title>
+      </Helmet>
+      <Page title="All Listings">
+        <div className={styles.listings}>
+          {listings &&
+            listings.map((listing) => (
+              <Link
+                className={styles.listing}
+                key={listing._id}
+                to={`/listing/${listing._id}`}
+              >
+                <h3 className={styles.title}>{listing.title}</h3>
+                <p className={styles.condition}>
+                  <span>Condition:</span> {listing.condition}
+                </p>
+                <p className={styles.type}>
+                  <span>Type:</span> {listing.type}
+                </p>
+                <p className={styles.price}>${listing.price}</p>
+                <div className={styles.seller}>
+                  <Image
+                    cloudName="seylumva"
+                    publicId={listing.author.avatarUrl}
+                    style={{ borderRadius: "50%" }}
+                  >
+                    <Transformation width="35" height="35" crop="fill" />
+                  </Image>
+                  <div>
+                    <h3>Listed by {listing.author.name}</h3>
+                    <p>Trades: #</p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-      </div>
-    </Page>
+              </Link>
+            ))}
+        </div>
+      </Page>
+    </>
   );
 };
 
