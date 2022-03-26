@@ -5,8 +5,9 @@ import { deleteListing, getListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { Helmet } from "react-helmet-async";
-import { Image, Transformation } from "cloudinary-react";
+import { AdvancedImage } from "@cloudinary/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { getListingAvatar } from "../../utils/cloudinaryConfig";
 
 const ListingPage = () => {
   const { postId } = useParams();
@@ -101,18 +102,10 @@ const ListingPage = () => {
                       className="stat"
                     >
                       <div className="stat-figure text-secondary">
-                        <div className="avatar">
-                          <Image
-                            cloudName="seylumva"
-                            publicId={listing.author.avatarUrl}
-                            className="rounded-full"
-                          >
-                            <Transformation
-                              width="50"
-                              height="50"
-                              crop="fill"
-                            />
-                          </Image>
+                        <div className="avatar rounded-badge overflow-hidden">
+                          <AdvancedImage
+                            cldImg={getListingAvatar(listing.author.avatarUrl)}
+                          ></AdvancedImage>
                         </div>
                       </div>
                       <div className="stat-value text-lg">

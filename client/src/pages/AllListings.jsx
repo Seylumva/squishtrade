@@ -1,4 +1,3 @@
-import { Image, Transformation } from "cloudinary-react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
@@ -6,6 +5,8 @@ import Spinner from "../components/Spinner";
 import { getAllListings, reset } from "../features/listing/listingSlice";
 import { Helmet } from "react-helmet-async";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { AdvancedImage } from "@cloudinary/react";
+import { getListingAvatar } from "../utils/cloudinaryConfig";
 
 const AllListings = () => {
   const { listings, status } = useSelector((state) => state.listing);
@@ -60,18 +61,10 @@ const AllListings = () => {
                   <div className="stats stats-vertical">
                     <div to={`/profile/${listing.author._id}`} className="stat">
                       <div className="stat-figure text-secondary">
-                        <div className="avatar">
-                          <Image
-                            cloudName="seylumva"
-                            publicId={listing.author.avatarUrl}
-                            className="rounded-full"
-                          >
-                            <Transformation
-                              width="50"
-                              height="50"
-                              crop="fill"
-                            />
-                          </Image>
+                        <div className="avatar rounded-badge overflow-hidden">
+                          <AdvancedImage
+                            cldImg={getListingAvatar(listing.author.avatarUrl)}
+                          ></AdvancedImage>
                         </div>
                       </div>
                       <div className="stat-value text-sm">

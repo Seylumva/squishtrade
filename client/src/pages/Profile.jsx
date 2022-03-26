@@ -1,13 +1,14 @@
+import Spinner from "../components/Spinner";
+import SignOutButton from "../components/SignOutButton";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getUserListings, reset } from "../features/listing/listingSlice";
-import Spinner from "../components/Spinner";
 import { Helmet } from "react-helmet-async";
 import { Link, Navigate } from "react-router-dom";
-import SignOutButton from "../components/SignOutButton";
-import { Image, Transformation } from "cloudinary-react";
 import { changeAvatar, reset as userReset } from "../features/user/userSlice";
+import { AdvancedImage } from "@cloudinary/react";
+import { getProfileAvatar, uploadUserAvatar } from "../utils/cloudinaryConfig";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -25,19 +26,7 @@ const Profile = () => {
     e.preventDefault();
     if (e.target.files[0]) {
       try {
-        const formData = new FormData();
-        formData.append("file", e.target.files[0]);
-        formData.append("upload_preset", "squishtrade_assets");
-        const res = await fetch(
-          "https://api.cloudinary.com/v1_1/seylumva/image/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        ).then((res) => res.json());
-        const thunkData = {
-          avatarUrl: res.public_id,
-        };
+        const thunkData = await uploadUserAvatar(e.target.files[0]);
         dispatch(changeAvatar(thunkData)).then(() => dispatch(userReset()));
       } catch (error) {
         console.log(error);
@@ -70,17 +59,9 @@ const Profile = () => {
                   <div className="flex flex-col gap-3 justify-center">
                     <div className="avatar">
                       <div className="w-24 mask mask-squircle">
-                        <Image
-                          className="mx-auto"
-                          cloudName="seylumva"
-                          publicId={user.avatarUrl}
-                        >
-                          <Transformation
-                            width="125"
-                            height="125"
-                            crop="fill"
-                          />
-                        </Image>
+                        <AdvancedImage
+                          cldImg={getProfileAvatar(user.avatarUrl)}
+                        ></AdvancedImage>
                       </div>
                     </div>
                     <label

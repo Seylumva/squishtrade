@@ -1,10 +1,11 @@
-import { Image, Transformation } from "cloudinary-react";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import { getUserProfile, reset } from "./listingSlice";
+import { AdvancedImage } from "@cloudinary/react";
+import { getProfileAvatar } from "../../utils/cloudinaryConfig";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -46,17 +47,9 @@ const UserProfile = () => {
                   <div className="flex flex-col gap-3 justify-center">
                     <div className="avatar">
                       <div className="w-24 mask mask-squircle">
-                        <Image
-                          className="mx-auto"
-                          cloudName="seylumva"
-                          publicId={profile.avatarUrl}
-                        >
-                          <Transformation
-                            width="125"
-                            height="125"
-                            crop="fill"
-                          />
-                        </Image>
+                        <AdvancedImage
+                          cldImg={getProfileAvatar(profile.avatarUrl)}
+                        ></AdvancedImage>
                       </div>
                     </div>
                   </div>

@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshUserData, reset } from "../features/user/userSlice";
-import { Image, Transformation } from "cloudinary-react";
+import { AdvancedImage } from "@cloudinary/react";
 import SignOutButton from "./SignOutButton";
+import { getProfileAvatar } from "../utils/cloudinaryConfig";
 const Header = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -33,13 +34,9 @@ const Header = () => {
               <div className="dropdown dropdown-end">
                 <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <Image
-                      cloudName="seylumva"
-                      publicId={user.avatarUrl}
-                      style={{ borderRadius: "50%" }}
-                    >
-                      <Transformation width="35" height="35" crop="fill" />
-                    </Image>
+                    <AdvancedImage
+                      cldImg={getProfileAvatar(user.avatarUrl)}
+                    ></AdvancedImage>
                   </div>
                 </label>
                 <ul
