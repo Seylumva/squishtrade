@@ -1,5 +1,6 @@
 import { Cloudinary } from "@cloudinary/url-gen";
 import { fill, scale } from "@cloudinary/url-gen/actions/resize";
+import { toast } from "react-toastify";
 
 const cld = new Cloudinary({
   cloud: {
@@ -40,17 +41,27 @@ export const uploadUserAvatar = async (image) => {
 };
 
 export const uploadListingPictures = async (images) => {
-  const formData = new FormData();
-  const listingImages = [];
-  for (let image of images) {
-    formData.append("file", image);
-    formData.append("upload_preset", "squishtrade_assets");
-    const res = await fetch("https://api.cloudinary.com/v1_1/seylumva/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json();
-    listingImages.push(data.public_id);
+  try {
+    const formData = new FormData();
+    const listingImages = [];
+    for (let image of images) {
+      formData.append("file", image);
+      formData.append("upload_preset", "squishtrade_assets");
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/seylumva/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
+      if (data.error) {
+        throw new Error("Wrong file type.");
+      }
+      listingImages.push(data.public_id);
+    }
+    return listingImages;
+  } catch (error) {
+    toast.error(error.message);
   }
-  return listingImages;
 };

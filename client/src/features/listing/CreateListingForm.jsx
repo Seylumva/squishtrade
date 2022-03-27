@@ -42,6 +42,9 @@ const CreateListingForm = () => {
       if (formData.images.length > 0) {
         listingImages = await uploadListingPictures(formData.images);
       }
+      if (!listingImages) {
+        return;
+      }
       const listing = {
         ...formData,
         images: listingImages,
