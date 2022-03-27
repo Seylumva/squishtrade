@@ -64,7 +64,7 @@ const UserLoginForm = () => {
       <Helmet>
         <title>Login | Squishtrade</title>
       </Helmet>
-      <div className="min-h-screen bg-base-200 w-full pt-12">
+      <div className="min-h-screen bg-base-200 w-full py-12">
         <h2 className="text-center text-3xl font-medium mb-12">Log In</h2>
         <form
           onSubmit={handleLogin}

@@ -76,7 +76,7 @@ const UserRegistrationForm = () => {
       <Helmet>
         <title>Register | Squishtrade</title>
       </Helmet>
-      <div className="min-h-screen bg-base-200 w-full pt-12">
+      <div className="min-h-screen bg-base-200 w-full py-12">
         <h2 className="text-center text-3xl font-medium mb-12">Register</h2>
         <form
           onSubmit={handleRegister}

@@ -90,7 +90,7 @@ const EditListingForm = () => {
       <Helmet>
         <title>Edit Listing | Squishtrade</title>
       </Helmet>
-      <div className="min-h-screen bg-base-200 w-full pt-12">
+      <div className="min-h-screen bg-base-200 w-full py-12">
         <h2 className="text-center text-3xl font-medium mb-8">New Listing</h2>
         <form
           className="max-w-sm flex flex-col items-center mx-auto gap-1"

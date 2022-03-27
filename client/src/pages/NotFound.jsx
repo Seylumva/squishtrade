@@ -8,7 +8,7 @@ const NotFound = () => {
       <Helmet>
         <title>404 Not found | Squishtrade</title>
       </Helmet>
-      <section className="min-h-screen bg-base-200 w-full pt-12">
+      <section className="min-h-screen bg-base-200 w-full py-12">
         <header className="space-y-3">
           <h2 className="text-3xl font-semibold text-center">
             No Squishmallows here...

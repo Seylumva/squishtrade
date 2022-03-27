@@ -47,7 +47,7 @@ const Profile = () => {
             <Helmet>
               <title>Your Profile | Squishtrade</title>
             </Helmet>
-            <div className="min-h-screen bg-base-200 w-full pt-12">
+            <div className="min-h-screen bg-base-200 w-full py-12">
               <section>
                 <header className="mb-8">
                   <h2 className="text-center text-2xl font-semibold">

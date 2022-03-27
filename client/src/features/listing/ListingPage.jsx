@@ -38,7 +38,7 @@ const ListingPage = () => {
             <Helmet>
               <title>{listing.title} | Squishtrade</title>
             </Helmet>
-            <article className="min-h-screen bg-base-200 w-full pt-12 relative">
+            <article className="min-h-screen bg-base-200 w-full py-12 relative">
               <div className="container mx-auto space-y-5 px-5">
                 {listing.images.length > 0 && (
                   <>
