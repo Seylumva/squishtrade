@@ -51,16 +51,18 @@ const createListing = catchAsync(async (req, res) => {
   }
   const { _id: userId } = req.user;
 
-  const { title, description, price, type, condition } = req.body;
+  const { title, description, price, type, condition, images } = req.body;
   if (!title || !description || !price || !type || !condition) {
     throw new AppError("Please provide all the necessary fields.", 400);
   }
+
   const newListing = await Listing.create({
     title,
     description,
     price,
     type,
     condition,
+    images,
     author: userId,
   });
   if (newListing) {
