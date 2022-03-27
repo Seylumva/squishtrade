@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { uploadListingPictures } from "../../utils/cloudinaryConfig";
 
 const CreateListingForm = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const CreateListingForm = () => {
     description: "",
     type: "Standard",
     condition: "Brand New",
+    images: [],
   });
 
   useEffect(() => {
@@ -31,13 +33,18 @@ const CreateListingForm = () => {
     // eslint-disable-next-line
   }, [message, dispatch, navigate, listing]);
 
-  const handleListingSubmit = (e) => {
+  const handleListingSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.price || !formData.description) {
       toast.error("Please provide all the necessary fields.");
     } else {
+      let listingImages = [];
+      if (formData.images.length > 0) {
+        listingImages = await uploadListingPictures(formData.images);
+      }
       const listing = {
         ...formData,
+        images: listingImages,
         price: Number(formData.price),
       };
       dispatch(createListing(listing));
@@ -80,6 +87,45 @@ const CreateListingForm = () => {
               onChange={handleInputChange}
               value={formData.title}
               required
+            />
+          </div>
+          {/* Upload Images */}
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">
+                Images{" "}
+                {formData.images.length > 0 && `(${formData.images.length})`}
+              </span>
+            </label>
+            <div className="flex gap-3 mb-2">
+              {formData.images.length > 0 &&
+                formData.images.map((image, index) => (
+                  <img
+                    className="w-12 aspect-square object-cover mask mask-squircle"
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt=""
+                  />
+                ))}
+            </div>
+            <label
+              htmlFor="avatar"
+              className="btn btn-outline btn-primary btn-sm"
+            >
+              Upload
+            </label>
+            <input
+              onChange={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  images: [...e.target.files],
+                }))
+              }
+              type="file"
+              className="hidden mt-auto"
+              name="avatar"
+              id="avatar"
+              multiple
             />
           </div>
           {/* Squish Price */}
@@ -133,6 +179,7 @@ const CreateListingForm = () => {
                 <option value="Stack">Stack</option>
                 <option value="Squeezemallow">Squeezemallow</option>
                 <option value="Tin">Tin</option>
+                <option value="Hug Mee">Hug Mee</option>
               </select>
               <label className="label"></label>
             </div>

@@ -164,6 +164,7 @@ const EditListingForm = () => {
                 <option value="Stack">Stack</option>
                 <option value="Squeezemallow">Squeezemallow</option>
                 <option value="Tin">Tin</option>
+                <option value="Hug Mee">Hug Mee</option>
               </select>
               <label className="label"></label>
             </div>
