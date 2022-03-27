@@ -22,7 +22,6 @@ export const getProfileAvatar = (publicId) => {
 export const getListingImage = (publicId) => {
   const image = cld.image(publicId);
   image.resize(scale().height(400));
-  console.log(image);
   return image;
 };
 
