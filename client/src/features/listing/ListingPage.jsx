@@ -7,7 +7,10 @@ import Spinner from "../../components/Spinner";
 import { Helmet } from "react-helmet-async";
 import { AdvancedImage } from "@cloudinary/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { getListingAvatar } from "../../utils/cloudinaryConfig";
+import {
+  getListingAvatar,
+  getListingImage,
+} from "../../utils/cloudinaryConfig";
 
 const ListingPage = () => {
   const { postId } = useParams();
@@ -37,6 +40,35 @@ const ListingPage = () => {
             </Helmet>
             <article className="min-h-screen bg-base-200 w-full pt-12 relative">
               <div className="container mx-auto space-y-5 px-5">
+                {listing.images.length > 0 && (
+                  <>
+                    <div className="carousel max-w-full">
+                      {listing.images.map((image, index) => (
+                        <div
+                          id={`item${index + 1}`}
+                          className="carousel-item w-full"
+                          key={index}
+                        >
+                          <AdvancedImage
+                            className="mx-auto object-contain rounded-lg"
+                            cldImg={getListingImage(image)}
+                          ></AdvancedImage>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center w-full py-2 gap-2">
+                      {listing.images.map((images, index) => (
+                        <a
+                          className="btn btn-xs"
+                          href={`#item${index + 1}`}
+                          key={index}
+                        >
+                          {index + 1}
+                        </a>
+                      ))}
+                    </div>
+                  </>
+                )}
                 <h2 className="text-4xl font-semibold">{listing.title}</h2>
                 <h3 className="text-2xl font-semibold text-primary">
                   Price: ${listing.price} USD
