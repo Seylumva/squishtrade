@@ -46,7 +46,7 @@ const AllListings = () => {
                   key={listing._id}
                   to={`/listing/${listing._id}`}
                 >
-                  <div className="space-y-2 pl-3">
+                  <div className="space-y-2 pl-2 w-9/12/12">
                     <h4 className="text-xl font-semibold">{listing.title}</h4>
                     <p className="badge badge-outline badge-md badge-primary block">
                       <span>{`Type:  ${listing.type}`}</span>
