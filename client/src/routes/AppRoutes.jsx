@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import PrivateRoute from "../components/PrivateRoute";
+import { PrivateRoute } from "../components";
 import CreateListingForm from "../features/listing/CreateListingForm";
 import EditListingForm from "../features/listing/EditListingForm";
 import ListingPage from "../features/listing/ListingPage";

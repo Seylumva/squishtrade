@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "./userSlice";
 import { Helmet } from "react-helmet-async";
-import Spinner from "../../components/Spinner";
+import { Spinner } from "../../components";
 
 const UserLoginForm = () => {
   const [formData, setFormData] = useState({
