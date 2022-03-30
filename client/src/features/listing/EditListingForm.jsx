@@ -1,10 +1,18 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import Spinner from "../../components/Spinner";
+import { Spinner } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { editListing, getListing, reset } from "./listingSlice";
+import {
+  deleteListingImage,
+  editListing,
+  getListing,
+  reset,
+} from "./listingSlice";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { AdvancedImage } from "@cloudinary/react";
+import { getListingImage } from "../../utils/cloudinaryConfig";
+import { FaStar } from "react-icons/fa";
 
 const EditListingForm = () => {
   const { postId } = useParams();
@@ -19,6 +27,7 @@ const EditListingForm = () => {
     description: "",
     type: "",
     condition: "",
+    images: [],
   });
 
   if (listing && listing._id !== formData._id) {
@@ -33,6 +42,7 @@ const EditListingForm = () => {
         price: listing.price,
         description: listing.description,
         condition: listing.condition,
+        images: listing.images,
       });
     }
 
@@ -77,6 +87,21 @@ const EditListingForm = () => {
     }));
   };
 
+  const handleDeleteImage = (imageId) => {
+    dispatch(deleteListingImage({ postId, imageId }))
+      .unwrap()
+      .then((data) => {
+        setFormData((state) => ({ ...state, images: data.images }));
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
+
+  const handleSetPrimaryImage = () => {
+    toast.info("Feature coming soon.");
+  };
+
   if (status === "loading") {
     return <Spinner />;
   }
@@ -91,7 +116,7 @@ const EditListingForm = () => {
         <title>Edit Listing | Squishtrade</title>
       </Helmet>
       <div className="min-h-screen bg-base-200 w-full py-12">
-        <h2 className="text-center text-3xl font-medium mb-8">New Listing</h2>
+        <h2 className="text-center text-3xl font-medium mb-8">Edit Listing</h2>
         <form
           className="max-w-sm flex flex-col items-center mx-auto gap-1"
           onSubmit={handleListingEdit}
@@ -109,8 +134,54 @@ const EditListingForm = () => {
               id="title"
               onChange={handleInputChange}
               value={formData.title}
+              maxLength={40}
               required
             />
+          </div>
+          {/* Images */}
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Images</span>
+            </label>
+            <div className="flex flex-col gap-3">
+              {formData.images.map((image, index) => (
+                <div className="flex gap-3" key={index}>
+                  <AdvancedImage
+                    cldImg={getListingImage(image)}
+                    className={`w-12 aspect-square object-cover mask mask-squircle`}
+                  />
+                  <button
+                    className="btn btn-error"
+                    onClick={() => handleDeleteImage(image)}
+                    type="button"
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="btn btn-warning"
+                    type="button"
+                    onClick={handleSetPrimaryImage}
+                  >
+                    <FaStar />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="">
+              <label
+                htmlFor="avatar"
+                className="btn btn-outline btn-primary btn-sm w-full mt-3"
+              >
+                Upload
+              </label>
+              <input
+                type="file"
+                className="hidden mt-auto"
+                name="avatar"
+                id="avatar"
+                multiple
+              />
+            </div>
           </div>
           {/* Squish Price */}
           <div className="form-control w-full">
@@ -127,6 +198,7 @@ const EditListingForm = () => {
                 id="price"
                 onChange={handleInputChange}
                 value={formData.price}
+                min={0}
                 required
               />
               <span>USD</span>

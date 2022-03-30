@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import Spinner from "../../components/Spinner";
+import { Spinner } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { createListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
@@ -89,6 +89,7 @@ const CreateListingForm = () => {
               id="title"
               onChange={handleInputChange}
               value={formData.title}
+              maxLength={40}
               required
             />
           </div>
@@ -146,6 +147,7 @@ const CreateListingForm = () => {
                 id="price"
                 onChange={handleInputChange}
                 value={formData.price}
+                min={0}
                 required
               />
               <span>USD</span>
