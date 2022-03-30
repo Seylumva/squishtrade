@@ -1,39 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { registerUser, loginUser, changeUserAvatar } from "./userServices";
+import {
+  registerUser,
+  loginUser,
+  changeUserAvatar,
+  refreshUser,
+} from "./userServices";
 
 const user = JSON.parse(localStorage.getItem("user"));
-
-const initialState = {
-  user: user ? user : null,
-  status: null,
-  message: "",
-};
-
-const API_URL = "/api/users";
 
 export const refreshUserData = createAsyncThunk(
   "user/refreshUser",
   async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(`${API_URL}/me`, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await refreshUser(thunkAPI);
   }
 );
 
@@ -61,6 +39,12 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("user/logout", async () => {
   await localStorage.removeItem("user");
 });
+
+const initialState = {
+  user: user ? user : null,
+  status: null,
+  message: "",
+};
 
 const userSlice = createSlice({
   name: "user",

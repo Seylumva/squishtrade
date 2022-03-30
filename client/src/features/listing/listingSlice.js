@@ -1,152 +1,68 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const LISTING_API_URL = "/api/listings";
-const USER_API_URL = "/api/users";
+import {
+  getUserProfileService,
+  getUserListingsService,
+  getAllListingsService,
+  getListingService,
+  createListingService,
+  editListingService,
+  deleteListingService,
+  deleteListingImageService,
+} from "./listingServices";
 
 export const getUserProfile = createAsyncThunk(
   "listing/getUserProfile",
   async (userId, thunkAPI) => {
-    try {
-      const response = await axios.get(`${USER_API_URL}/${userId}`);
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await getUserProfileService(userId, thunkAPI);
+  }
+);
+
+export const deleteListingImage = createAsyncThunk(
+  "listing/deleteImage",
+  async ({ postId, imageId }, thunkAPI) => {
+    return await deleteListingImageService(postId, imageId, thunkAPI);
   }
 );
 
 export const getUserListings = createAsyncThunk(
   "listing/getUserListings",
   async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(LISTING_API_URL, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await getUserListingsService(thunkAPI);
   }
 );
 
 export const getAllListings = createAsyncThunk(
   "listing/getListings",
   async (_, thunkAPI) => {
-    try {
-      const response = await axios.get(`${LISTING_API_URL}/all`);
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await getAllListingsService(thunkAPI);
   }
 );
 
 export const getListing = createAsyncThunk(
   "listing/getListing",
   async (postId, thunkAPI) => {
-    try {
-      const response = await axios.get(`${LISTING_API_URL}/${postId}`);
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await getListingService(postId, thunkAPI);
   }
 );
 
 export const createListing = createAsyncThunk(
   "listing/createListing",
   async (formData, thunkAPI) => {
-    try {
-      const response = await axios.post(LISTING_API_URL, formData, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await createListingService(formData, thunkAPI);
   }
 );
 
 export const editListing = createAsyncThunk(
   "listing/editListing",
   async ({ listingId, formData }, thunkAPI) => {
-    try {
-      const response = await axios.put(
-        `${LISTING_API_URL}/${listingId}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await editListingService(listingId, formData, thunkAPI);
   }
 );
 
 export const deleteListing = createAsyncThunk(
   "listing/deleteListing",
   async (listingId, thunkAPI) => {
-    try {
-      const response = await axios.delete(`${LISTING_API_URL}/${listingId}`, {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return await deleteListingService(listingId, thunkAPI);
   }
 );
 
@@ -240,6 +156,12 @@ const listingSlice = createSlice({
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.status = "error";
+        state.message = action.payload;
+      })
+      .addCase(deleteListingImage.fulfilled, (state, action) => {
+        state.listing = action.payload;
+      })
+      .addCase(deleteListingImage.rejected, (state, action) => {
         state.message = action.payload;
       });
   },
