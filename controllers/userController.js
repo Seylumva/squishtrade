@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const Listing = require("../models/listingModel");
 const generateToken = require("../util/generateToken");
 const mongoose = require("mongoose");
+
 // @route   GET /api/users
 // @desc    Get all users
 // @access  Private (Admin Only)
@@ -23,18 +24,18 @@ const registerUser = catchAsync(async (req, res) => {
   }
   const sameName = await User.findOne({ name });
   if (sameName) {
-    throw new AppError("Username is taken by another user.", 400);
+    throw new AppError("That username is taken by another user.", 400);
   }
   const sameEmail = await User.findOne({ email });
   if (sameEmail) {
-    throw new AppError("Email is taken by another user.", 400);
+    throw new AppError("That email is taken by another user.", 400);
   }
 
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(password, salt);
   const user = await User.create({
     name,
-    email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     isAdmin: false,
   });
@@ -55,7 +56,7 @@ const registerUser = catchAsync(async (req, res) => {
 const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: email.toLowerCase() });
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
       id: user._id,
