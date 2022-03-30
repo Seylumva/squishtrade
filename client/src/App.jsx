@@ -15,7 +15,15 @@ function App() {
             <AppRoutes />
           </main>
         </Router>
-        <ToastContainer />
+        <ToastContainer
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+          style={{ top: "80px" }}
+          limit={1}
+          hideProgressBar={true}
+          autoClose={1500}
+          theme="colored"
+        />
       </HelmetProvider>
     </>
   );
