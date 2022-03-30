@@ -5,10 +5,11 @@ const listingSchema = mongoose.Schema(
     title: {
       type: String,
       required: true,
+      maxLength: [40, "Title must be less than 40 characters long."],
     },
     images: {
       type: [String],
-      required: false,
+      required: true,
     },
     description: {
       type: String,
@@ -17,6 +18,7 @@ const listingSchema = mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      min: 0,
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
