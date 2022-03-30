@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import { Spinner, AuthorStats } from "../components";
 import { getAllListings, reset } from "../features/listing/listingSlice";
 import { Helmet } from "react-helmet-async";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { AdvancedImage } from "@cloudinary/react";
-import { getListingAvatar } from "../utils/cloudinaryConfig";
+import { getListingAvatar, getListingImage } from "../utils/cloudinaryConfig";
 
 const AllListings = () => {
   const { listings, status } = useSelector((state) => state.listing);
@@ -39,49 +39,34 @@ const AllListings = () => {
         </header>
         <article>
           {listings && (
-            <div className="px-5 mx-auto container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div className="px-5 mx-auto container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4  xl:grid-cols-5 gap-5">
               {listings.map((listing) => (
                 <Link
-                  className="p-5 bg-base-300 outline outline-base-200 hover:bg-base-100 hover:outline-base-300 transition rounded-md shadow-xl flex flex-col justify-between items-start gap-3 relative"
+                  className="p-5 bg-base-300 outline outline-base-200 hover:bg-base-100 justify-between hover:outline-base-300 transition rounded-md shadow-xl flex flex-col items-start gap-8 relative"
                   key={listing._id}
                   to={`/listing/${listing._id}`}
                 >
-                  <div className="space-y-2 pl-2 w-9/12/12">
-                    <h4 className="text-xl font-semibold">{listing.title}</h4>
+                  {listing.images.length > 0 && (
+                    <div className="w-full">
+                      <AdvancedImage
+                        className="object-cover object-center w-full"
+                        cldImg={getListingImage(listing.images[0])}
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-3 max-w-full">
+                    <h4 className="text-xl font-semibold text-ellipsis whitespace-nowrap max-w-full overflow-hidden">
+                      {listing.title}
+                    </h4>
+                    <p className="text-primary text-4xl font-semibold">
+                      ${listing.price}
+                    </p>
                     <p className="badge badge-outline badge-md badge-primary block">
                       <span>{`Type:  ${listing.type}`}</span>
                     </p>
                     <p className="badge badge-outline badge-md badge-secondary block">
                       <span>{`Condition:  ${listing.condition}`}</span>
                     </p>
-                    <p className="text-primary text-4xl font-semibold absolute top-5 right-5">
-                      ${listing.price}
-                    </p>
-                  </div>
-                  <div className="stats stats-vertical">
-                    <div to={`/profile/${listing.author._id}`} className="stat">
-                      <div className="stat-figure text-secondary">
-                        <div className="avatar rounded-badge overflow-hidden">
-                          <AdvancedImage
-                            cldImg={getListingAvatar(listing.author.avatarUrl)}
-                          ></AdvancedImage>
-                        </div>
-                      </div>
-                      <div className="stat-value text-sm">
-                        {listing.author.name}
-                      </div>
-                      <div className="stat-title">Trades: Soon&trade;</div>
-                      <div className="stat-desc text-secondary text-sm">
-                        Joined{" "}
-                        {listing?.author?.createdAt &&
-                          formatDistanceToNow(
-                            new Date(listing.author.createdAt),
-                            {
-                              addSuffix: true,
-                            }
-                          )}
-                      </div>
-                    </div>
                   </div>
                 </Link>
               ))}
