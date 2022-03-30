@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteListing, getListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
-import Spinner from "../../components/Spinner";
+import { Spinner } from "../../components";
 import { Helmet } from "react-helmet-async";
 import { AdvancedImage } from "@cloudinary/react";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
@@ -52,7 +52,7 @@ const ListingPage = () => {
                           <AdvancedImage
                             className="mx-auto object-contain rounded-lg"
                             cldImg={getListingImage(image)}
-                          ></AdvancedImage>
+                          />
                         </div>
                       ))}
                     </div>
