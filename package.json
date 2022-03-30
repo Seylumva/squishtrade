@@ -19,6 +19,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.6",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "react-icons": "^4.3.1"
   }
 }
