@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import { Spinner } from "../../components";
+import { FormImageInput, FormImageList, Spinner } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { createListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { uploadListingPictures } from "../../utils/cloudinaryConfig";
+import { uploadListingImages } from "../../utils/cloudinaryConfig";
 
 const CreateListingForm = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const CreateListingForm = () => {
     } else {
       let listingImages = [];
       if (formData.images.length > 0) {
-        listingImages = await uploadListingPictures(formData.images);
+        listingImages = await uploadListingImages(formData.images);
       }
       if (!listingImages) {
         return;
@@ -58,6 +58,13 @@ const CreateListingForm = () => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleAddImage = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      images: [...prevState.images, ...e.target.files],
     }));
   };
 
@@ -93,7 +100,7 @@ const CreateListingForm = () => {
               required
             />
           </div>
-          {/* Upload Images */}
+          {/* Images */}
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">
@@ -101,38 +108,14 @@ const CreateListingForm = () => {
                 {formData.images.length > 0 && `(${formData.images.length})`}
               </span>
             </label>
-            <div className="flex gap-3 mb-2">
-              {formData.images.length > 0 &&
-                formData.images.map((image, index) => (
-                  <img
-                    className="w-12 aspect-square object-cover mask mask-squircle"
-                    key={index}
-                    src={URL.createObjectURL(image)}
-                    alt=""
-                  />
-                ))}
-            </div>
-            <label
-              htmlFor="avatar"
-              className="btn btn-outline btn-primary btn-sm"
-            >
-              Upload
-            </label>
-            <input
-              onChange={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  images: [...e.target.files],
-                }))
-              }
-              type="file"
-              className="hidden mt-auto"
-              name="avatar"
-              id="avatar"
-              multiple
+            <FormImageList
+              images={formData.images}
+              setFormData={setFormData}
+              formData={formData}
             />
+            <FormImageInput handleAddImage={handleAddImage} />
           </div>
-          {/* Squish Price */}
+          {/* Price */}
           <div className="form-control w-full">
             <label htmlFor="price" className="label">
               <span className="label-text">Price</span>

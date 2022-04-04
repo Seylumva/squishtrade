@@ -7,20 +7,12 @@ import {
   createListingService,
   editListingService,
   deleteListingService,
-  deleteListingImageService,
 } from "./listingServices";
 
 export const getUserProfile = createAsyncThunk(
   "listing/getUserProfile",
   async (userId, thunkAPI) => {
     return await getUserProfileService(userId, thunkAPI);
-  }
-);
-
-export const deleteListingImage = createAsyncThunk(
-  "listing/deleteImage",
-  async ({ postId, imageId }, thunkAPI) => {
-    return await deleteListingImageService(postId, imageId, thunkAPI);
   }
 );
 
@@ -156,12 +148,6 @@ const listingSlice = createSlice({
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.status = "error";
-        state.message = action.payload;
-      })
-      .addCase(deleteListingImage.fulfilled, (state, action) => {
-        state.listing = action.payload;
-      })
-      .addCase(deleteListingImage.rejected, (state, action) => {
         state.message = action.payload;
       });
   },
