@@ -121,36 +121,6 @@ const deleteListing = catchAsync(async (req, res) => {
   }
 });
 
-const deleteListingImage = catchAsync(async (req, res) => {
-  const { _id: userId } = req.user;
-  const { id } = req.params;
-  const { imageId } = req.body;
-  const listing = await Listing.findById(id);
-
-  if (listing.images.length <= 1) {
-    throw new AppError("You must have at least one image.", 400);
-  }
-
-  if (!userId.equals(listing.author)) {
-    throw new AppError("Not authorized.", 403);
-  }
-
-  if (!listing) {
-    throw new AppError("No listing found.", 404);
-  }
-  const filteredImages = [...listing.images].filter((img) => img !== imageId);
-  const updatedListing = await Listing.findByIdAndUpdate(
-    id,
-    { images: filteredImages },
-    { returnOriginal: false }
-  ).populate("author", ["-password", "-isAdmin"]);
-  if (updatedListing) {
-    res.status(201).json(updatedListing);
-  } else {
-    throw new AppError("Something went wrong.", 500);
-  }
-});
-
 module.exports = {
   getAllListings,
   getUserListings,
@@ -158,5 +128,4 @@ module.exports = {
   createListing,
   deleteListing,
   updateListing,
-  deleteListingImage,
 };

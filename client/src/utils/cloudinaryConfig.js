@@ -1,6 +1,7 @@
 import { Cloudinary } from "@cloudinary/url-gen";
 import { fill, scale } from "@cloudinary/url-gen/actions/resize";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const cld = new Cloudinary({
   cloud: {
@@ -63,5 +64,28 @@ export const uploadListingPictures = async (images) => {
     return listingImages;
   } catch (error) {
     toast.error(error.message);
+  }
+};
+
+export const uploadListingImages = async (images) => {
+  try {
+    const formData = new FormData();
+    const uploadedImagesArray = [];
+    for await (let image of images) {
+      if (image.constructor.name === "File") {
+        formData.append("file", image);
+        formData.append("upload_preset", "squishtrade_assets");
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/seylumva/upload",
+          formData
+        );
+        uploadedImagesArray.push(response.data.public_id);
+      } else {
+        uploadedImagesArray.push(image);
+      }
+    }
+    return uploadedImagesArray;
+  } catch (error) {
+    toast.error("You may only upload images.");
   }
 };

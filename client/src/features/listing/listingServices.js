@@ -73,16 +73,3 @@ export const deleteListingService = async (listingId, thunkAPI) => {
     return thunkAPI.rejectWithValue(serverErrorMessage(error));
   }
 };
-
-// To be refactored within editListingService
-export const deleteListingImageService = async (postId, imageId, thunkAPI) => {
-  try {
-    const requestInstance = listingRequest(thunkAPI);
-    const response = await requestInstance.delete(`/${postId}/images`, {
-      data: { imageId },
-    });
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(serverErrorMessage(error));
-  }
-};

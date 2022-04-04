@@ -1,18 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
-import { Spinner } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteListingImage,
-  editListing,
-  getListing,
-  reset,
-} from "./listingSlice";
+import { editListing, getListing, reset } from "./listingSlice";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { AdvancedImage } from "@cloudinary/react";
-import { getListingImage } from "../../utils/cloudinaryConfig";
-import { FaStar } from "react-icons/fa";
+import {
+  Spinner,
+  FormImageList,
+  FormImageInput,
+  DeleteListingButton,
+} from "../../components";
+import { uploadListingImages } from "../../utils/cloudinaryConfig";
 
 const EditListingForm = () => {
   const { postId } = useParams();
@@ -55,12 +53,15 @@ const EditListingForm = () => {
     // eslint-disable-next-line
   }, [dispatch, navigate]);
 
-  const handleListingEdit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const images = await uploadListingImages(formData.images);
     const formattedListing = {
       ...formData,
       price: Number(formData.price),
+      images,
     };
+
     dispatch(
       editListing({
         listingId: postId,
@@ -87,19 +88,11 @@ const EditListingForm = () => {
     }));
   };
 
-  const handleDeleteImage = (imageId) => {
-    dispatch(deleteListingImage({ postId, imageId }))
-      .unwrap()
-      .then((data) => {
-        setFormData((state) => ({ ...state, images: data.images }));
-      })
-      .catch((err) => {
-        toast.error(err);
-      });
-  };
-
-  const handleSetPrimaryImage = () => {
-    toast.info("Feature coming soon.");
+  const handleAddImage = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      images: [...prevState.images, ...e.target.files],
+    }));
   };
 
   if (status === "loading") {
@@ -119,7 +112,7 @@ const EditListingForm = () => {
         <h2 className="text-center text-3xl font-medium mb-8">Edit Listing</h2>
         <form
           className="max-w-sm flex flex-col items-center mx-auto gap-1"
-          onSubmit={handleListingEdit}
+          onSubmit={handleFormSubmit}
         >
           {/* Title */}
           <div className="form-control w-full">
@@ -141,49 +134,19 @@ const EditListingForm = () => {
           {/* Images */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Images</span>
+              <span className="label-text">
+                Images{" "}
+                {formData.images.length > 0 && `(${formData.images.length})`}
+              </span>
             </label>
-            <div className="flex flex-col gap-3">
-              {formData.images.map((image, index) => (
-                <div className="flex gap-3" key={index}>
-                  <AdvancedImage
-                    cldImg={getListingImage(image)}
-                    className={`w-12 aspect-square object-cover mask mask-squircle`}
-                  />
-                  <button
-                    className="btn btn-error"
-                    onClick={() => handleDeleteImage(image)}
-                    type="button"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="btn btn-warning"
-                    type="button"
-                    onClick={handleSetPrimaryImage}
-                  >
-                    <FaStar />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <div className="">
-              <label
-                htmlFor="avatar"
-                className="btn btn-outline btn-primary btn-sm w-full mt-3"
-              >
-                Upload
-              </label>
-              <input
-                type="file"
-                className="hidden mt-auto"
-                name="avatar"
-                id="avatar"
-                multiple
-              />
-            </div>
+            <FormImageList
+              images={formData.images}
+              setFormData={setFormData}
+              formData={formData}
+            />
+            <FormImageInput handleAddImage={handleAddImage} />
           </div>
-          {/* Squish Price */}
+          {/* Price */}
           <div className="form-control w-full">
             <label htmlFor="price" className="label">
               <span className="label-text">Price</span>
@@ -261,6 +224,15 @@ const EditListingForm = () => {
           </div>
           <button className="btn btn-block btn-primary">Submit</button>
         </form>
+        <div className="mt-5 max-w-sm mx-auto flex justify-end">
+          {listing && (
+            <DeleteListingButton
+              listingId={listing._id}
+              text="Delete Listing"
+              outline={false}
+            />
+          )}
+        </div>
       </div>
     </>
   );

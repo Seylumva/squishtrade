@@ -6,7 +6,6 @@ const {
   getListing,
   deleteListing,
   updateListing,
-  deleteListingImage,
 } = require("../controllers/listingController");
 const { protected, adminProtected } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -23,7 +22,5 @@ router
   .get(getListing)
   .delete(protected, deleteListing)
   .put(protected, updateListing);
-
-router.route("/:id/images").delete(protected, deleteListingImage);
 
 module.exports = router;
