@@ -1,21 +1,20 @@
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteListing, getListing, reset } from "./listingSlice";
-import { toast } from "react-toastify";
-import { Spinner } from "../../components";
+import { getListing, reset } from "./listingSlice";
+import {
+  FormattedTimestamp,
+  Spinner,
+  DeleteListingButton,
+  UserStats,
+} from "../../components";
 import { Helmet } from "react-helmet-async";
 import { AdvancedImage } from "@cloudinary/react";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import {
-  getListingAvatar,
-  getListingImage,
-} from "../../utils/cloudinaryConfig";
+import { getListingImage } from "../../utils/cloudinaryConfig";
 
 const ListingPage = () => {
   const { postId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { listing, status } = useSelector((state) => state.listing);
   const { user } = useSelector((state) => state.user);
 
@@ -42,7 +41,7 @@ const ListingPage = () => {
               <div className="container mx-auto space-y-5 px-5">
                 {listing.images.length > 0 && (
                   <>
-                    <div className="carousel max-w-full">
+                    <div className="carousel max-w-full h-[400px]">
                       {listing.images.map((image, index) => (
                         <div
                           id={`item${index + 1}`}
@@ -81,21 +80,17 @@ const ListingPage = () => {
                     <span>{`Condition:  ${listing.condition}`}</span>
                   </p>
                 </div>
-                <p>{listing.description}</p>
+                <p className="whitespace-pre-wrap">{listing.description}</p>
                 <div className="space-y-3">
-                  <p className="text-gray-400 font-semibold">
-                    Posted{" "}
-                    {formatDistanceToNow(new Date(listing.createdAt), {
-                      addSuffix: true,
-                    })}
-                  </p>
+                  <FormattedTimestamp
+                    timestamp={listing.createdAt}
+                    prepend="Created"
+                  />
                   {listing.createdAt !== listing.updatedAt && (
-                    <p className="text-gray-400 font-semibold">
-                      Updated{" "}
-                      {formatDistanceToNow(new Date(listing.updatedAt), {
-                        addSuffix: true,
-                      })}
-                    </p>
+                    <FormattedTimestamp
+                      timestamp={listing.updatedAt}
+                      prepend="Updated"
+                    />
                   )}
                   {user && user.id === listing.author._id && (
                     <div className="flex gap-3">
@@ -105,56 +100,10 @@ const ListingPage = () => {
                       >
                         Edit
                       </Link>
-                      <button
-                        className="btn btn-error btn-outline btn-md"
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              "Are you sure you want to delete this listing?"
-                            )
-                          ) {
-                            dispatch(deleteListing(listing._id))
-                              .unwrap()
-                              .then((res) => {
-                                navigate("/profile");
-                                toast.success(`Listing deleted.`);
-                              })
-                              .catch((err) => toast.error(err));
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
+                      <DeleteListingButton listingId={listing._id} />
                     </div>
                   )}
-
-                  <div className="stats bg-base-300 stats-vertical shadow border-2 border-transparent transition hover:border-slate-600">
-                    <Link
-                      to={`/profile/${listing.author._id}`}
-                      className="stat"
-                    >
-                      <div className="stat-figure text-secondary">
-                        <div className="avatar rounded-badge overflow-hidden">
-                          <AdvancedImage
-                            cldImg={getListingAvatar(listing.author.avatarUrl)}
-                          ></AdvancedImage>
-                        </div>
-                      </div>
-                      <div className="stat-value text-lg">
-                        {listing.author.name}
-                      </div>
-                      <div className="stat-title">Trades: Soon&trade;</div>
-                      <div className="stat-desc text-secondary text-sm">
-                        Joined{" "}
-                        {formatDistanceToNow(
-                          new Date(listing.author.createdAt),
-                          {
-                            addSuffix: true,
-                          }
-                        )}
-                      </div>
-                    </Link>
-                  </div>
+                  <UserStats author={listing.author} />
                 </div>
               </div>
             </article>
