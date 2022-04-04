@@ -65,3 +65,13 @@ export const uploadListingPictures = async (images) => {
     toast.error(error.message);
   }
 };
+
+function goodFunctionToKeep() {
+  console.log("This is a function that I want to keep in the repository");
+}
+
+function badFunctionToDelete() {
+  console.log(
+    "This is a function that I do not want to keep in the repository"
+  );
+}
