@@ -24,7 +24,7 @@ First make sure you are at the root directory.
 
 ---
 
-###
+### Stack
 
 This project uses React.js with React-Router v6 on the frontend, styled with TailwindCSS & DaisyUI, and Node.js with Express and MongoDB in the backend.
 
