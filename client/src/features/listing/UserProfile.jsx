@@ -2,13 +2,10 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { Spinner } from "../../components";
+import { Avatar, Spinner } from "../../components";
 import { getUserProfile, reset } from "./listingSlice";
 import { AdvancedImage } from "@cloudinary/react";
-import {
-  getProfileAvatar,
-  getListingImage,
-} from "../../utils/cloudinaryConfig";
+import { getListingImage } from "../../utils/cloudinaryConfig";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -48,13 +45,7 @@ const UserProfile = () => {
                 <article className="flex justify-center max-w-sm mx-auto gap-8">
                   {/* Avatar */}
                   <div className="flex flex-col gap-3 justify-center">
-                    <div className="avatar">
-                      <div className="w-24 mask mask-squircle">
-                        <AdvancedImage
-                          cldImg={getProfileAvatar(profile.avatarUrl)}
-                        ></AdvancedImage>
-                      </div>
-                    </div>
+                    <Avatar src={profile.avatarUrl} />
                   </div>
                   {/* profile information */}
                   <div className="flex flex-col pt-5 flex-grow">
