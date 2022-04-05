@@ -3,19 +3,18 @@ const bcrypt = require("bcrypt");
 const { AppError } = require("../middleware/errorMiddleware");
 const User = require("../models/userModel");
 const Listing = require("../models/listingModel");
-const generateToken = require("../util/generateToken");
 const mongoose = require("mongoose");
 
-// @route   GET /api/users
 // @desc    Get all users
+// @route   GET /api/users
 // @access  Private (Admin Only)
 const getAllUsers = catchAsync(async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
 
+// @desc    Register user with name, email and password
 // @route   POST /api/register
-// @desc    Register user
 // @access  Public
 const registerUser = catchAsync(async (req, res) => {
   const { name, email, password } = req.body;
@@ -30,7 +29,7 @@ const registerUser = catchAsync(async (req, res) => {
   if (sameEmail) {
     throw new AppError("That email is taken by another user.", 400);
   }
-
+  // Generate hashed password and store it as the user's password
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(password, salt);
   const user = await User.create({
@@ -39,54 +38,29 @@ const registerUser = catchAsync(async (req, res) => {
     password: hashedPassword,
     isAdmin: false,
   });
-
   if (user) {
-    res.status(201).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-      avatarUrl: user.avatarUrl,
-    });
+    res.status(201).json(user.toClient());
   } else {
     throw new AppError("Invalid user data.", 403);
   }
 });
 
+// @desc    Log in user with email and password
+// @route   POST /api/users/login
+// @access  Public
 const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-
   const user = await User.findOne({ email: email.toLowerCase() });
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.status(200).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-      avatarUrl: user.avatarUrl,
-    });
+    res.status(200).json(user.toClient());
   } else {
     throw new AppError("Invalid credentials.", 401);
   }
 });
 
-const getUserProfile = catchAsync(async (req, res) => {
-  const { userId } = req.params;
-  if (!mongoose.isValidObjectId(userId)) {
-    throw new AppError("Not a valid user ID.", 400);
-  }
-  const user = await User.findById(userId).select(["-password", "-isAdmin"]);
-  const listings = await Listing.find({ author: user._id });
-  if (user && listings) {
-    res.status(200).json({
-      user,
-      listings,
-    });
-  } else {
-    throw new AppError("Could not retrieve user or listing data.", 500);
-  }
-});
-
+// @desc    Update a user's avatar
+// @route   PUT /api/users/me/avatar
+// @access  Private (to current user)
 const updateUserAvatar = catchAsync(async (req, res) => {
   const { _id: userId } = req.user;
   const { avatarUrl } = req.body;
@@ -96,26 +70,17 @@ const updateUserAvatar = catchAsync(async (req, res) => {
     { returnDocument: "after" }
   ).select(["-password", "-isAdmin"]);
   if (user) {
-    res.status(200).json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      avatarUrl: user.avatarUrl,
-      token: generateToken(user._id),
-    });
+    res.status(200).json(user.toClient());
   } else {
     throw new AppError("Something went wrong.", 500);
   }
 });
 
+// @desc    Retrieve current user's data
+// @route   GET /api/users/me
+// @access  Private (to current user)
 const getUser = (req, res) => {
-  res.status(200).json({
-    id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    avatarUrl: req.user.avatarUrl,
-    token: generateToken(req.user.id),
-  });
+  res.status(200).json(req.user.toClient());
 };
 
 module.exports = {
@@ -123,6 +88,5 @@ module.exports = {
   registerUser,
   loginUser,
   getUser,
-  getUserProfile,
   updateUserAvatar,
 };
