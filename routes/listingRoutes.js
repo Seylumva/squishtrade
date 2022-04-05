@@ -1,20 +1,23 @@
 const express = require("express");
 const {
   createListing,
-  getUserListings,
+  getLoggedInUsersListings,
   getAllListings,
   getListing,
   deleteListing,
   updateListing,
+  getUsersListingsAndProfile,
 } = require("../controllers/listingController");
-const { protected, adminProtected } = require("../middleware/authMiddleware");
+const { protected } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.route("/all").get(getAllListings);
 
+router.route("/from").get(getUsersListingsAndProfile);
+
 router
   .route("/")
-  .get(protected, getUserListings)
+  .get(protected, getLoggedInUsersListings)
   .post(protected, createListing);
 
 router

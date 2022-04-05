@@ -14,6 +14,9 @@ const protected = catchAsync(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const { id } = jwt.verify(token, process.env.JWT_SECRET);
       const user = await User.findById(id).select("-password");
+      if (!user) {
+        throw new AppError("Not authorized.", 401);
+      }
       req.user = user;
       next();
     } catch (err) {
