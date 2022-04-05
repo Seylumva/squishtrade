@@ -100,7 +100,7 @@ const ListingPage = () => {
                       >
                         Edit
                       </Link>
-                      <DeleteListingButton listingId={listing._id} />
+                      <DeleteListingButton listingId={listing.id} />
                     </div>
                   )}
                   <UserStats author={listing.author} />
