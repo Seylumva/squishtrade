@@ -42,7 +42,31 @@ const listingSchema = mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
   }
 );
+
+listingSchema.methods.toClient = function () {
+  return {
+    id: this._id,
+    title: this.title,
+    description: this.description,
+    condition: this.condition,
+    type: this.type,
+    price: this.price,
+    images: this.images,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
+    author: this.author,
+  };
+};
+
+listingSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+listingSchema.set("toJSON", { virtuals: true });
+
+listingSchema.statics.find;
 
 module.exports = mongoose.model("Listing", listingSchema);
