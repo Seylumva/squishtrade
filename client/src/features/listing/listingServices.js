@@ -1,15 +1,12 @@
-import {
-  serverErrorMessage,
-  listingRequest,
-  userRequest,
-} from "../../utils/sliceHelpers";
+import { serverErrorMessage, listingRequest } from "../../utils/sliceHelpers";
 
-const userRequestWithoutToken = userRequest();
 const listingRequestWithoutToken = listingRequest();
 
 export const getUserProfileService = async (userId, thunkAPI) => {
   try {
-    const response = await userRequestWithoutToken.get(`/${userId}`);
+    const response = await listingRequestWithoutToken.get(
+      `/from?userId=${userId}`
+    );
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue(serverErrorMessage(error));
