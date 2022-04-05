@@ -25,7 +25,7 @@ const CreateListingForm = () => {
       toast.error(message);
     }
     if (listing && status === "success") {
-      navigate(`/listing/${listing?._id}`, { replace: true });
+      navigate(`/listing/${listing?.id}`, { replace: true });
     }
     return () => {
       dispatch(reset());

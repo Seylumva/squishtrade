@@ -28,7 +28,7 @@ const EditListingForm = () => {
     images: [],
   });
 
-  if (listing && listing._id !== formData._id) {
+  if (listing && formData._id === null) {
     setFormData({ ...listing });
   }
 
@@ -227,7 +227,7 @@ const EditListingForm = () => {
         <div className="mt-5 max-w-sm mx-auto flex justify-end">
           {listing && (
             <DeleteListingButton
-              listingId={listing._id}
+              listingId={listing.id}
               text="Delete Listing"
               outline={false}
             />
