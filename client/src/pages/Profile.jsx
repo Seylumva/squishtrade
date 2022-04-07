@@ -86,9 +86,6 @@ const Profile = () => {
                     <h3 className="pl-3">
                       Name: <span className="font-semibold">{user.name}</span>
                     </h3>
-                    <h4 className="pl-3">
-                      Email: <span className="font-semibold">{user.email}</span>
-                    </h4>
                     <SignOutButton
                       className="btn btn-error btn-outline btn-sm mt-auto"
                       name={user.name}

@@ -53,10 +53,6 @@ const UserProfile = () => {
                       Name:{" "}
                       <span className="font-semibold">{profile.name}</span>
                     </h3>
-                    <h4>
-                      Email:{" "}
-                      <span className="font-semibold">{profile.email}</span>
-                    </h4>
                   </div>
                 </article>
               </section>
