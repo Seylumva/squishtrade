@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "../components";
+import ShoppingCart from "../features/cart/ShoppingCart";
 import CreateListingForm from "../features/listing/CreateListingForm";
 import EditListingForm from "../features/listing/EditListingForm";
 import ListingPage from "../features/listing/ListingPage";
@@ -18,6 +19,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<UserRegistrationForm />} />
         <Route path="/login" element={<UserLoginForm />} />
+        <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/listing/:postId" element={<ListingPage />} />
         <Route path="/listing/:postId/edit" element={<PrivateRoute />}>
           <Route index element={<EditListingForm />} />

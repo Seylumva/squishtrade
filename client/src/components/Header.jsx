@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshUserData, reset } from "../features/user/userSlice";
 import { AdvancedImage } from "@cloudinary/react";
 import SignOutButton from "./SignOutButton";
+import { FaShoppingCart } from "react-icons/fa";
 import { getProfileAvatar } from "../utils/cloudinaryConfig";
 const Header = () => {
   const { user } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state);
   const dispatch = useDispatch();
   // Runs once when the page is first opened or refreshed to
   // update the user state from the server across other devices
@@ -26,9 +28,19 @@ const Header = () => {
               Squishtrade
             </Link>
           </div>
-          <Link to="/listings" className="btn btn-ghost btn-sm mr-3">
+          <Link to="/listings" className="btn btn-ghost btn-sm mr-1">
             Browse
           </Link>
+          <div className="indicator mr-5">
+            {cart.length > 0 ? (
+              <span className="indicator-item badge badge-secondary">
+                {cart.length}
+              </span>
+            ) : null}
+            <Link to="/cart" className="btn btn-ghost btn-sm gap-2">
+              <FaShoppingCart />
+            </Link>
+          </div>
           {user ? (
             <div className="flex-none">
               <div className="dropdown dropdown-end">
